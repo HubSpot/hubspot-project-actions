@@ -1,0 +1,32 @@
+name: 'Project Deploy'
+description: 'Deploy a project build'
+inputs:
+  build_id:
+    description: 'Build ID to deploy'
+    required: true 
+  project_dir:
+    description: 'Directory where hsproject.json is'
+    required: true
+    default: ./
+  personal-access-key: 
+    description: '[SECRET] Personal Access Key, generated in HubSpot, to use the CLI.'
+    required: true
+    type: string
+  account-id: 
+    description: 'HubSpot account ID associated with the personal-access-key. Also known as Portal ID.'
+    required: true
+    type: number
+outputs:
+  deploy_id:
+    description: The deploy ID of the initaited HubSpot project deploy
+runs:
+  using: "composite"
+  steps:
+    - name: Deploy a HubSpot project build
+      shell: bash
+      env:
+        HUBSPOT_PERSONAL_ACCESS_KEY: ${{ inputs.personal-access-key }}
+        HUBSPOT_ACCOUNT_ID: ${{ inputs.account-id }}
+      working-directory: ${{ inputs.project_dir }}
+      run: |
+        hs project deploy --build ${{ inputs.build_id }}  --use-env | grep 'Deploy' | awk -F "#" '{print $2}' | awk '{print "deploy_id=" $1}' >> "$GITHUB_OUTPUT"

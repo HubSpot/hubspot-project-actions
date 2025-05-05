@@ -1,0 +1,36 @@
+name: 'Project validate'
+description: 'Build + deploy a project in a test account'
+inputs:
+    project_dir:
+    description: 'Directory where hsproject.json is'
+    required: true
+    default: ./
+  personal-access-key: 
+    description: '[SECRET] Personal Access Key, generated in HubSpot, to use the CLI.'
+    required: true
+    type: string
+  account-id: 
+    description: 'HubSpot account ID associated with the personal-access-key. Also known as Portal ID.'
+    required: true
+    type: number
+outputs:
+  build_id: ${{ steps.project_build.outputs.build_id }}
+  deploy_id: ${{ steps.project_deploy.outputs.deploy_id }}
+runs:
+  using: "composite"
+  steps:
+    - name: Build a HubSpot project
+      id: project_build
+      uses: ../project-build
+      with:
+        project_dir: ${{ inputs.project_dir }}
+        personal-access-key: ${{ inputs.personal-access-key }}
+        account-id: ${{ account-id }}
+    - name: Deploy project build
+      id: project_deploy
+      uses: ../project-deploy
+      with:
+        build_id: ${{ steps.project_build_outputs.build_id }}
+        project_dir: ${{ inputs.project_dir }}
+        personal-access-key: ${{ inputs.personal-access-key }}
+        account-id: ${{ inputs.account-id }}

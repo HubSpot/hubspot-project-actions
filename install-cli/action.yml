@@ -1,0 +1,18 @@
+name: "Install HubSpot CLI"
+inputs:
+  cli-version:
+    description: "Version of HubSpot CLI to get from NPM"
+    required: true
+    default: "latest"
+runs:
+  using: "composite"
+  steps:
+    - name: setup NPM
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+    - name: install HubSpot CLI
+      shell: bash
+      run: |
+        npm install -g @hubspot/cli@${{ inputs.cli-version }}
+
