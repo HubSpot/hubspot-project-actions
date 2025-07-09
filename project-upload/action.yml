@@ -27,4 +27,4 @@ runs:
         HUBSPOT_ACCOUNT_ID: ${{ inputs.account-id }}
       working-directory: ${{ inputs.project_dir }}
       run: |
-        hs project upload --force-create --use-env --message "${{ github.event.head_commit.message || 'Uploaded via HubSpot GitHub Action' }} (${GITHUB_SHA:0:7})" | grep 'Build' | awk -F "#" '{print $2}' | awk '{print "build_id=" $1}' >> "$GITHUB_OUTPUT"
+        hs project upload --force-create --use-env --json --message "${{ github.event.head_commit.message || 'Uploaded via HubSpot GitHub Action' }} (${GITHUB_SHA:0:7})" | jq -r '{"build_id":.buildId, "deploy_id":.deployId} | to_entries | .[] | "\(.key)=\(.value)"' >> "$GITHUB_OUTPUT"
