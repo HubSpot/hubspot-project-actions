@@ -6,11 +6,11 @@ inputs:
     required: true
     default: ./
     type: string
-  personal-access-key:
+  personal_access_key:
     description: "[SECRET] Personal Access Key generated in HubSpot that grants access to the CLI."
     required: true
     type: string
-  account-id:
+  account_id:
     description: "HubSpot account ID associated with the personal-access-key."
     required: true
     type: number
@@ -23,8 +23,8 @@ runs:
     - name: Upload source code to HubSpot Project
       shell: bash
       env:
-        HUBSPOT_PERSONAL_ACCESS_KEY: ${{ inputs.personal-access-key }}
-        HUBSPOT_ACCOUNT_ID: ${{ inputs.account-id }}
+        HUBSPOT_PERSONAL_ACCESS_KEY: ${{ inputs.personal_access_key }}
+        HUBSPOT_ACCOUNT_ID: ${{ inputs.account_id }}
       working-directory: ${{ inputs.project_dir }}
       run: |
         hs project upload --force-create --use-env --json --message "${{ github.event.head_commit.message || 'Uploaded via HubSpot GitHub Action' }} (${GITHUB_SHA:0:7})" | jq -r '{"build_id":.buildId, "deploy_id":.deployId} | to_entries | .[] | "\(.key)=\(.value)"' >> "$GITHUB_OUTPUT"
