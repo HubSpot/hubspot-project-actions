@@ -1,36 +1,30 @@
-name: 'Project validate'
-description: 'Build + deploy a project in a test account'
+name: "Project validate"
+description: "Validate the configuration of a HubSpot project"
 inputs:
-    project_dir:
-    description: 'Directory where hsproject.json is'
+  project_dir:
+    description: "The path to the directory where your hsproject.json file is located"
     required: true
     default: ./
-  personal-access-key: 
-    description: '[SECRET] Personal Access Key, generated in HubSpot, to use the CLI.'
+    type: string
+  personal_access_key:
+    description: "[SECRET] Personal Access Key generated in HubSpot that grants access to the CLI."
     required: true
     type: string
-  account-id: 
-    description: 'HubSpot account ID associated with the personal-access-key. Also known as Portal ID.'
+  account_id:
+    description: "HubSpot account ID associated with the personal-access-key."
     required: true
     type: number
 outputs:
-  build_id: ${{ steps.project_build.outputs.build_id }}
-  deploy_id: ${{ steps.project_deploy.outputs.deploy_id }}
+  validation_result:
+    description: "The validation result of the HubSpot project"
 runs:
   using: "composite"
   steps:
-    - name: Build a HubSpot project
-      id: project_build
-      uses: ../project-build
-      with:
-        project_dir: ${{ inputs.project_dir }}
-        personal-access-key: ${{ inputs.personal-access-key }}
-        account-id: ${{ account-id }}
-    - name: Deploy project build
-      id: project_deploy
-      uses: ../project-deploy
-      with:
-        build_id: ${{ steps.project_build_outputs.build_id }}
-        project_dir: ${{ inputs.project_dir }}
-        personal-access-key: ${{ inputs.personal-access-key }}
-        account-id: ${{ inputs.account-id }}
+    - name: Validate HubSpot project
+      shell: bash
+      env:
+        HUBSPOT_PERSONAL_ACCESS_KEY: ${{ inputs.personal_access_key }}
+        HUBSPOT_ACCOUNT_ID: ${{ inputs.account_id }}
+      working-directory: ${{ inputs.project_dir }}
+      run: |
+        hs project validate --json | jq -r '{"validation_result":.result} | to_entries | .[] | "\(.key)=\(.value)"' >> "$GITHUB_OUTPUT"

@@ -1,0 +1,30 @@
+name: "Create Test Account"
+description: "Create a new test account from a configuration file"
+inputs:
+  account_config_path:
+    description: "The path to the test account configuration file"
+    required: true
+    type: string
+  personal_access_key:
+    description: "[SECRET] Personal Access Key generated in HubSpot that grants access to the CLI."
+    required: true
+    type: string
+  account_id:
+    description: "HubSpot account ID associated with the personal-access-key."
+    required: true
+    type: number
+outputs:
+  personal_access_key:
+    description: "The personal access key of the created test account"
+  account_id:
+    description: "The account ID of the created test account"
+runs:
+  using: "composite"
+  steps:
+    - name: Create new HubSpot test account
+      shell: bash
+      env:
+        HUBSPOT_PERSONAL_ACCESS_KEY: ${{ inputs.personal_access_key }}
+        HUBSPOT_ACCOUNT_ID: ${{ inputs.account_id }}
+      run: |
+        hs test-account create --config-path ${{ inputs.account_config_file }} --json | jq -r '{"personal_access_key":.personalAccessKey, "account_id":.accountId} | to_entries | .[] | "\(.key)=\(.value)"' >> "$GITHUB_OUTPUT"
