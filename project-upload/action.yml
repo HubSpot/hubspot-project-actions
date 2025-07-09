@@ -1,0 +1,30 @@
+name: "Project upload"
+description: "Upload and build a HubSpot project in your account. If auto-deploy is enabled, the build will also be deployed to your account."
+inputs:
+  project_dir:
+    description: "The path to the directory where your hsproject.json file is located"
+    required: true
+    default: ./
+    type: string
+  personal-access-key:
+    description: "[SECRET] Personal Access Key generated in HubSpot that grants access to the CLI."
+    required: true
+    type: string
+  account-id:
+    description: "HubSpot account ID associated with the personal-access-key."
+    required: true
+    type: number
+outputs:
+  build_id:
+    description: "The build ID of the created HubSpot project build"
+runs:
+  using: "composite"
+  steps:
+    - name: Upload source code to HubSpot Project
+      shell: bash
+      env:
+        HUBSPOT_PERSONAL_ACCESS_KEY: ${{ inputs.personal-access-key }}
+        HUBSPOT_ACCOUNT_ID: ${{ inputs.account-id }}
+      working-directory: ${{ inputs.project_dir }}
+      run: |
+        hs project upload --force-create --use-env --message "${{ github.event.head_commit.message || 'Uploaded via HubSpot GitHub Action' }} (${GITHUB_SHA:0:7})" | grep 'Build' | awk -F "#" '{print $2}' | awk '{print "build_id=" $1}' >> "$GITHUB_OUTPUT"
