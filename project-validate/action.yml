@@ -1,4 +1,4 @@
-name: "Project validate"
+name: "Project Validate"
 description: "Validate the configuration of a HubSpot project"
 inputs:
   project_dir:
@@ -49,3 +49,5 @@ runs:
 
         # Run validation - command will exit with non-zero if validation fails
         hs project validate --use-env
+
+        echo "✅ Project validation completed successfully"

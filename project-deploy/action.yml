@@ -67,3 +67,5 @@ runs:
 
         # Parse and set outputs
         set_output_from_json "deploy_id" ".deployId"
+
+        echo "✅ Project deployment initiated successfully"

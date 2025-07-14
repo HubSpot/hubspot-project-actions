@@ -65,3 +65,5 @@ runs:
         # Parse and set outputs
         set_output_from_json "personal_access_key" ".personalAccessKey"
         set_output_from_json "account_id" ".accountId"
+
+        echo "✅ Test account created successfully"

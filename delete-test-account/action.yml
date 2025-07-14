@@ -53,3 +53,5 @@ runs:
         run_hs_command \
           "hs test-account delete --use-env '${{ inputs.test_account_id }}'" \
           "false"
+
+        echo "✅ Test account deleted successfully"

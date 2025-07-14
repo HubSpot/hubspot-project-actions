@@ -1,4 +1,4 @@
-name: "Project upload"
+name: "Project Upload"
 description: "Upload and build a HubSpot project in your account. If auto-deploy is enabled, the build will also be deployed to your account."
 inputs:
   project_dir:
@@ -60,3 +60,5 @@ runs:
         # Parse and set outputs
         set_output_from_json "build_id" ".buildId"
         set_output_from_json "deploy_id" ".deployId" "true"
+
+        echo "✅ Project upload completed successfully"
