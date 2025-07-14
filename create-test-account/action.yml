@@ -16,12 +16,15 @@ inputs:
 outputs:
   personal_access_key:
     description: "The personal access key of the created test account"
+    value: ${{ steps.create-test-account.outputs.personal_access_key }}
   account_id:
     description: "The account ID of the created test account"
+    value: ${{ steps.create-test-account.outputs.account_id }}
 runs:
   using: "composite"
   steps:
     - name: Create new HubSpot test account
+      id: create-test-account
       shell: bash
       env:
         HUBSPOT_PERSONAL_ACCESS_KEY: ${{ inputs.personal_access_key }}
@@ -43,6 +46,10 @@ runs:
         run_hs_command \
           "hs test-account create --use-env --json --config-path '${{ inputs.account_config_path }}'" \
           "true"
+
+        # Debug: Show raw JSON
+        echo "Debug: Raw JSON output:"
+        echo "$PARSED_OUTPUT" | jq '.'
 
         # Parse and set outputs
         set_output_from_json "personal_access_key" ".personalAccessKey"
