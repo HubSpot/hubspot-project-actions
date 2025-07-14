@@ -29,6 +29,8 @@ This guide walks through setting up a new workflow file that automatically uploa
 1. In your project, create a GitHub Action workflow file at `.github/workflows/main.yml`
 2. Copy the following example workflow into your `main.yml` file.
 
+**Note:** Replace `- main` with your default branch name if it's something other than `main`
+
 ```yaml
 on:
   push:
@@ -49,9 +51,9 @@ jobs:
           personal_access_key: ${{ secrets.hubspot_personal_access_key }}
 ```
 
-4. Commit and merge your changes
+3. Commit and merge your changes
 
-_Note:_ Do not change the `account_id` or `personal_access_key` values in your workflow. Auth related values should only be stored as GitHub secrets.
+**Important!** Do not change the `account_id` or `personal_access_key` values in your workflow. Auth related values should only be stored as GitHub secrets.
 
 This should enable automatic uploads to your target HubSpot account with every commit into `main` 🚀
 
