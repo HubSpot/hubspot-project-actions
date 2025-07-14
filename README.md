@@ -47,8 +47,8 @@ jobs:
       - name: HubSpot Project Upload Action
         uses: HubSpot/hubspot-project-actions/project-upload@v1.0
         with:
-          account_id: ${{ secrets.hubspot_account_id }}
-          personal_access_key: ${{ secrets.hubspot_personal_access_key }}
+          account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
+          personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
 ```
 
 3. Commit and merge your changes
