@@ -6,11 +6,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.3.3
       - name: HubSpot CLI Install
-        uses: HubSpot/hubspot-project-actions/install-cli@${{ github.sha }}
+        uses: ./install-cli
         with:
           cli_version: 7.7.16-experimental.1
       - name: HubSpot Project Upload Action
-        uses: HubSpot/hubspot-project-actions/project-upload@${{ github.sha }}
+        uses: ./project-upload
         with:
           account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
           personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
