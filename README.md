@@ -100,6 +100,24 @@ Creates a new HubSpot test account based on a configuration file. This action al
     account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
 ```
 
+### `delete-test-account`
+
+Deletes a HubSpot test account. This action is typically used to clean up test accounts after running tests.
+
+**Inputs:**
+
+- `personal_access_key` (required): Personal Access Key of the test account to be deleted
+- `account_id` (required): Account ID of the test account to be deleted
+
+**Example usage:**
+
+```yaml
+- uses: HubSpot/hubspot-project-actions/delete-test-account@v1
+  with:
+    personal_access_key: ${{ steps.create-test-account.outputs.personal_access_key }}
+    account_id: ${{ steps.create-test-account.outputs.account_id }}
+```
+
 ### `project-upload`
 
 Uploads and builds a HubSpot project in your account. If auto-deploy is enabled, the build will also be deployed to your account.
@@ -159,10 +177,6 @@ Validates the configuration of a HubSpot project.
 - `project_dir` (optional): The path to the directory where your hsproject.json file is located. Defaults to "./"
 - `personal_access_key` (required): Personal Access Key generated in HubSpot that grants access to the CLI
 - `account_id` (required): HubSpot account ID associated with the personal access key
-
-**Outputs:**
-
-- `validation_result`: The validation result of the HubSpot project
 
 **Example usage:**
 

@@ -1,7 +1,7 @@
 name: "Delete Test Account"
 description: "Delete a test account"
 inputs:
-  account_id:
+  test_account_id:
     description: "The account ID of the test account to delete"
     required: true
     type: string
@@ -22,11 +22,10 @@ runs:
         HUBSPOT_PERSONAL_ACCESS_KEY: ${{ inputs.personal_access_key }}
         HUBSPOT_ACCOUNT_ID: ${{ inputs.account_id }}
       run: |
-        if [ -z "${{ inputs.account_id }}" ]; then
-          echo "Error: account_id is required but was not set"
+        if [ -z "${{ inputs.test_account_id }}" ]; then
+          echo "Error: test_account_id is required but was not set"
           exit 1
         fi
 
         # Delete the test account
-        hs test-account delete --use-env --account-id "${{ inputs.account_id }}"
- 
+        hs test-account delete --use-env --account-id "${{ inputs.test_account_id }}"
