@@ -118,7 +118,12 @@ set_output_from_json() {
     fi
   fi
 
-  # Set the output
-  echo "$output_name=$value" >> $GITHUB_OUTPUT
+  # Set the output using GitHub's recommended delimiter syntax
+  echo "${output_name}<<EOF" >> $GITHUB_OUTPUT
+  echo "$value" >> $GITHUB_OUTPUT
+  echo "EOF" >> $GITHUB_OUTPUT
+  
+  # Debug: Print what we just set
+  echo "Debug: Set output $output_name with value: $value"
   return 0
 } 
