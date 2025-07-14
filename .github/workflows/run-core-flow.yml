@@ -6,9 +6,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.3.3
       - name: HubSpot CLI Install
-        uses: HubSpot/hubspot-project-actions/install-cli@v0.0.1
+        uses: HubSpot/hubspot-project-actions/install-cli@6fc4c89edad452b63f07283afb73059e181b877a
       - name: HubSpot Project Upload Action
-        uses: HubSpot/hubspot-project-actions/project-upload@v0.0.1
+        uses: HubSpot/hubspot-project-actions/project-upload@6fc4c89edad452b63f07283afb73059e181b877a
         with:
           account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
           personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
