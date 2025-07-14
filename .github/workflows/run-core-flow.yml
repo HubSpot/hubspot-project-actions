@@ -14,20 +14,20 @@ jobs:
         uses: ./create-test-account
         with:
           account_config_path: ./.github/workflows/test-account-config.json
-          account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
           personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
+          account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
       - name: HubSpot Project Validation Action
         uses: ./project-validate
         with:
           project_dir: ./.github/workflows/example-project
-          account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
           personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
+          account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
       - name: HubSpot Project Upload Action
         uses: ./project-upload
         with:
           project_dir: ./.github/workflows/example-project
-          account_id: ${{ steps.test-account-create-step.outputs.account_id }}
           personal_access_key: ${{ steps.test-account-create-step.outputs.personal_access_key }}
+          account_id: ${{ steps.test-account-create-step.outputs.account_id }}
       - name: HubSpot Delete Test Account Action
         uses: ./delete-test-account
         with:

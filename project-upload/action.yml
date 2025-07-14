@@ -29,6 +29,9 @@ runs:
         # Source shared utilities
         . "$GITHUB_ACTION_PATH/../scripts/action-utils.sh"
 
+        # Validate account and personal access key
+        validate_account_and_personal_access_key "${{ inputs.account_id }}" "${{ inputs.personal_access_key }}"
+
         # Resolve and validate project directory
         resolve_project_dir "${{ inputs.project_dir }}"
 

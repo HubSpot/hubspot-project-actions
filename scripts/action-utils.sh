@@ -1,5 +1,23 @@
 #!/bin/bash
 
+
+validate_account_and_personal_access_key() {
+  local account_id="$1"
+  local personal_access_key="$2"
+
+  if [ -z "$account_id" ]; then
+    echo "Error: account_id is required but was not set"
+    exit 1
+  fi
+
+  if [ -z "$personal_access_key" ]; then
+    echo "Error: personal_access_key is required but was not set"
+    exit 1
+  fi
+
+  return 0
+}
+
 # Resolves and validates a project directory path, then changes into that directory
 # Arguments:
 #   $1 - Project directory path (relative or absolute)
