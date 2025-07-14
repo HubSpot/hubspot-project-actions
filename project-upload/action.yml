@@ -27,6 +27,31 @@ runs:
         HUBSPOT_ACCOUNT_ID: ${{ inputs.account_id }}
       working-directory: ${{ inputs.project_dir }}
       run: |
-        output=$(hs project upload --force-create --use-env --json --message "${{ github.event.head_commit.message || 'Uploaded via HubSpot GitHub Action' }} (${GITHUB_SHA:0:7})") && \
-        echo "$output" | jq -r '{"build_id":.buildId, "deploy_id":.deployId} | to_entries | .[] | "\(.key)=\(.value)"' >> "$GITHUB_OUTPUT" || \
-        (echo "::error::Failed to upload project: $output" && exit 1)
+        # Print directory contents for debugging
+        echo "::group::Directory contents"
+        ls -la
+        echo "::endgroup::"
+
+        # Check if hsproject.json exists
+        if [ ! -f "hsproject.json" ]; then
+          echo "::error::hsproject.json not found in $(pwd)"
+          exit 1
+        fi
+
+        # Run upload command with verbose output
+        echo "::group::Running upload command"
+        output=$(hs project upload --force-create --use-env --json --message "use experimental cli release (${GITHUB_SHA:0:7})") || {
+          echo "::error::Command failed with output:"
+          echo "$output"
+          exit 1
+        }
+        echo "Command output: $output"
+        echo "::endgroup::"
+
+        # Try to parse JSON and set outputs
+        if echo "$output" | jq . >/dev/null 2>&1; then
+          echo "$output" | jq -r '{"build_id":.buildId, "deploy_id":.deployId} | to_entries | .[] | "\(.key)=\(.value)"' >> "$GITHUB_OUTPUT"
+        else
+          echo "::error::Failed to parse JSON output: $output"
+          exit 1
+        fi
