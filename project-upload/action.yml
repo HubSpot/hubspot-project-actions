@@ -27,31 +27,98 @@ runs:
         HUBSPOT_ACCOUNT_ID: ${{ inputs.account_id }}
       working-directory: ${{ inputs.project_dir }}
       run: |
-        # Print directory contents for debugging
-        echo "::group::Directory contents"
-        ls -la
+        # Enable bash debugging
+        set -x
+
+        # Print environment information
+        echo "::group::Environment Information"
+        echo "Working directory: $(pwd)"
+        echo "Node version: $(node --version)"
+        echo "NPM version: $(npm --version)"
+        echo "HubSpot CLI version: $(hs --version)"
         echo "::endgroup::"
 
-        # Check if hsproject.json exists
+        # Print directory contents and structure
+        echo "::group::Directory Structure"
+        echo "Full directory tree:"
+        tree -a -L 3 || ls -R  # fallback to ls -R if tree is not available
+        echo "::endgroup::"
+
+        # Validate hsproject.json
+        echo "::group::Project File Validation"
         if [ ! -f "hsproject.json" ]; then
           echo "::error::hsproject.json not found in $(pwd)"
           exit 1
         fi
 
-        # Run upload command with verbose output
-        echo "::group::Running upload command"
-        output=$(hs project upload --force-create --use-env --json --network-debug --message "use experimental cli release (${GITHUB_SHA:0:7})") || {
-          echo "::error::Command failed with output:"
-          echo "$output"
-          exit 1
-        }
-        echo "Command output: $output"
-        echo "::endgroup::"
+        echo "hsproject.json contents:"
+        cat hsproject.json
 
-        # Try to parse JSON and set outputs
-        if echo "$output" | jq . >/dev/null 2>&1; then
-          echo "$output" | jq -r '{"build_id":.buildId, "deploy_id":.deployId} | to_entries | .[] | "\(.key)=\(.value)"' >> "$GITHUB_OUTPUT"
-        else
-          echo "::error::Failed to parse JSON output: $output"
+        if ! jq empty hsproject.json 2>/dev/null; then
+          echo "::error::hsproject.json is not valid JSON"
           exit 1
         fi
+        echo "::endgroup::"
+
+        # Check CLI configuration
+        echo "::group::CLI Configuration"
+        echo "Checking CLI configuration..."
+        hs auth status --json || {
+          echo "::error::Failed to verify CLI authentication"
+          exit 1
+        }
+        echo "::endgroup::"
+
+        # Run upload command with extensive debugging
+        echo "::group::Upload Command Execution"
+        echo "Executing upload command..."
+
+        # Set temporary debug log file
+        DEBUG_LOG="/tmp/hs-upload-debug-$$.log"
+
+        # Run command with all debug flags enabled
+        HUBSPOT_CLI_DEBUG=1 \
+        DEBUG=* \
+        hs project upload \
+          --force-create \
+          --use-env \
+          --json \
+          --network-debug \
+          --message "use experimental cli release (${GITHUB_SHA:0:7})" \
+          2>"$DEBUG_LOG" > >(tee /tmp/output.json) || {
+          echo "::error::Upload command failed"
+          echo "Debug log contents:"
+          cat "$DEBUG_LOG"
+          echo "Command output:"
+          cat /tmp/output.json
+          exit 1
+        }
+
+        # Store output for parsing
+        output=$(cat /tmp/output.json)
+        echo "Raw command output: $output"
+        echo "Debug log contents:"
+        cat "$DEBUG_LOG"
+        echo "::endgroup::"
+
+        # Parse and validate JSON output
+        echo "::group::Output Processing"
+        if echo "$output" | jq . >/dev/null 2>&1; then
+          echo "Successfully parsed JSON output"
+          echo "$output" | jq -r '{"build_id":.buildId, "deploy_id":.deployId} | to_entries | .[] | "\(.key)=\(.value)"' >> "$GITHUB_OUTPUT"
+          
+          # Print parsed values for verification
+          echo "Parsed values:"
+          cat "$GITHUB_OUTPUT"
+        else
+          echo "::error::Failed to parse JSON output"
+          echo "Raw output: $output"
+          exit 1
+        fi
+        echo "::endgroup::"
+
+        # Cleanup
+        rm -f "$DEBUG_LOG" /tmp/output.json
+
+        # Disable bash debugging
+        set +x
