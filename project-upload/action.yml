@@ -40,7 +40,7 @@ runs:
 
         # Run upload command with verbose output
         echo "::group::Running upload command"
-        output=$(hs project upload --force-create --use-env --json --network-debug --message "use experimental cli release (${GITHUB_SHA:0:7})") || {
+        output=$(hs project upload --force-create --use-env --json --message "use experimental cli release (${GITHUB_SHA:0:7})") || {
           echo "::error::Command failed with output:"
           echo "$output"
           exit 1

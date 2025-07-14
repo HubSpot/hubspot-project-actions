@@ -29,4 +29,4 @@ runs:
         HUBSPOT_ACCOUNT_ID: ${{ inputs.account-id }}
       working-directory: ${{ inputs.project_dir }}
       run: |
-        hs project deploy --build ${{ inputs.build_id }}  --use-env | grep 'Deploy' | awk -F "#" '{print $2}' | awk '{print "deploy_id=" $1}' >> "$GITHUB_OUTPUT"
+        hs project deploy --use-env --build ${{ inputs.build_id }} | grep 'Deploy' | awk -F "#" '{print $2}' | awk '{print "deploy_id=" $1}' >> "$GITHUB_OUTPUT"
