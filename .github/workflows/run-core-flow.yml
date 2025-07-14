@@ -1,0 +1,15 @@
+on: [push, workflow_dispatch]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.3
+      - name: HubSpot CLI Install
+        uses: HubSpot/hubspot-project-actions/install-cli@v1.0
+      - name: HubSpot Project Upload Action
+        uses: HubSpot/hubspot-project-actions/project-upload@v1.0
+        with:
+          account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
+          personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
+          project_dir: ./.github/workflows/example-project

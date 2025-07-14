@@ -27,4 +27,6 @@ runs:
         HUBSPOT_ACCOUNT_ID: ${{ inputs.account_id }}
       working-directory: ${{ inputs.project_dir }}
       run: |
-        hs project upload --force-create --use-env --json --message "${{ github.event.head_commit.message || 'Uploaded via HubSpot GitHub Action' }} (${GITHUB_SHA:0:7})" | jq -r '{"build_id":.buildId, "deploy_id":.deployId} | to_entries | .[] | "\(.key)=\(.value)"' >> "$GITHUB_OUTPUT"
+        output=$(hs project upload --force-create --use-env --json --message "${{ github.event.head_commit.message || 'Uploaded via HubSpot GitHub Action' }} (${GITHUB_SHA:0:7})") && \
+        echo "$output" | jq -r '{"build_id":.buildId, "deploy_id":.deployId} | to_entries | .[] | "\(.key)=\(.value)"' >> "$GITHUB_OUTPUT" || \
+        (echo "::error::Failed to upload project: $output" && exit 1)
