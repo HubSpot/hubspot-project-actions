@@ -1,4 +1,9 @@
 on: [push, workflow_dispatch]
+
+env:
+  DEFAULT_PERSONAL_ACCESS_KEY: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
+  DEFAULT_ACCOUNT_ID: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -16,14 +21,10 @@ jobs:
         uses: ./create-test-account
         with:
           account_config_path: ./.github/workflows/test-account-config.json
-          personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
-          account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
       - name: HubSpot Project Validation Action
         uses: ./project-validate
         with:
           project_dir: ./.github/workflows/example-project
-          personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
-          account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
       - name: HubSpot Project Upload Action
         uses: ./project-upload
         with:
@@ -46,5 +47,3 @@ jobs:
         uses: ./delete-test-account
         with:
           test_account_id: ${{ needs.deploy.outputs.test_account_id }}
-          personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
-          account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
