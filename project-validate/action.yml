@@ -22,17 +22,25 @@ runs:
       env:
         HUBSPOT_PERSONAL_ACCESS_KEY: ${{ inputs.personal_access_key }}
         HUBSPOT_ACCOUNT_ID: ${{ inputs.account_id }}
-      working-directory: ${{ inputs.project_dir }}
       run: |
-        if [ ! -d "${{ inputs.project_dir }}" ]; then
-          echo "Error: Project directory not found at path: ${{ inputs.project_dir }}"
+        # Convert to absolute path if relative
+        if [[ "${{ inputs.project_dir }}" != /* ]]; then
+          project_dir="$GITHUB_WORKSPACE/${{ inputs.project_dir }}"
+        else
+          project_dir="${{ inputs.project_dir }}"
+        fi
+
+        if [ ! -d "$project_dir" ]; then
+          echo "Error: Project directory not found at path: $project_dir"
           exit 1
         fi
 
-        if [ ! -f "hsproject.json" ]; then
-          echo "Error: hsproject.json not found in directory: ${{ inputs.project_dir }}"
+        if [ ! -f "$project_dir/hsproject.json" ]; then
+          echo "Error: hsproject.json not found in directory: $project_dir"
           exit 1
         fi
+
+        cd "$project_dir"
 
         # Run validation - command will exit with non-zero if validation fails
         hs project validate --use-env

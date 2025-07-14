@@ -1,0 +1,32 @@
+name: "Delete Test Account"
+description: "Delete a test account"
+inputs:
+  account_id:
+    description: "The account ID of the test account to delete"
+    required: true
+    type: string
+  personal_access_key:
+    description: "[SECRET] Personal Access Key generated in HubSpot that grants access to the CLI."
+    required: true
+    type: string
+  account_id:
+    description: "HubSpot account ID associated with the personal-access-key."
+    required: true
+    type: number
+runs:
+  using: "composite"
+  steps:
+    - name: Delete HubSpot test account
+      shell: bash
+      env:
+        HUBSPOT_PERSONAL_ACCESS_KEY: ${{ inputs.personal_access_key }}
+        HUBSPOT_ACCOUNT_ID: ${{ inputs.account_id }}
+      run: |
+        if [ -z "${{ inputs.account_id }}" ]; then
+          echo "Error: account_id is required but was not set"
+          exit 1
+        fi
+
+        # Delete the test account
+        hs test-account delete --use-env --account-id "${{ inputs.account_id }}"
+ 
