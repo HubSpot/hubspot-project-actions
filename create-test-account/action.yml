@@ -27,4 +27,4 @@ runs:
         HUBSPOT_PERSONAL_ACCESS_KEY: ${{ inputs.personal_access_key }}
         HUBSPOT_ACCOUNT_ID: ${{ inputs.account_id }}
       run: |
-        hs test-account create --use-env --json --config-path ${{ inputs.account_config_file }} | jq -r '{"personal_access_key":.personalAccessKey, "account_id":.accountId} | to_entries | .[] | "\(.key)=\(.value)"' >> "$GITHUB_OUTPUT"
+        hs test-account create --use-env --json --config-path ${{ inputs.account_config_path }} | jq -r '{"personal_access_key":.personalAccessKey, "account_id":.accountId} | to_entries | .[] | "\(.key)=\(.value)"' >> "$GITHUB_OUTPUT"
