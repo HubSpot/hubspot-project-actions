@@ -1,6 +1,9 @@
 #!/bin/bash
 
 setup_hubspot_cli() {
+  # Default to "latest" if HUBSPOT_CLI_VERSION is unset
+  HUBSPOT_CLI_VERSION="${HUBSPOT_CLI_VERSION:-latest}"
+
   # Check if hs CLI is already installed with correct version
   if ! command -v hs &> /dev/null || [[ "$HUBSPOT_CLI_VERSION" != "latest" && ! "$(hs --version)" =~ "$HUBSPOT_CLI_VERSION" ]]; then
     echo "Installing HubSpot CLI version $HUBSPOT_CLI_VERSION"
