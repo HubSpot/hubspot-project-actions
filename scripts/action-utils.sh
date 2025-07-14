@@ -1,0 +1,79 @@
+#!/bin/bash
+
+# Resolves and validates a project directory path, then changes into that directory
+# Arguments:
+#   $1 - Project directory path (relative or absolute)
+# Outputs:
+#   Sets PROJECT_DIR variable with the resolved absolute path
+#   Changes current working directory to the project directory
+#   Exits with error if directory or hsproject.json not found
+resolve_project_dir() {
+  local input_path="$1"
+  
+  # Convert to absolute path if relative
+  if [[ "$input_path" != /* ]]; then
+    PROJECT_DIR="$GITHUB_WORKSPACE/$input_path"
+  else
+    PROJECT_DIR="$input_path"
+  fi
+
+  if [ ! -d "$PROJECT_DIR" ]; then
+    echo "Error: Project directory not found at path: $PROJECT_DIR"
+    exit 1
+  fi
+
+  if [ ! -f "$PROJECT_DIR/hsproject.json" ]; then
+    echo "Error: hsproject.json not found in directory: $PROJECT_DIR"
+    exit 1
+  fi
+
+  # Change to the project directory
+  cd "$PROJECT_DIR" || {
+    echo "Error: Failed to change to project directory: $PROJECT_DIR"
+    exit 1
+  }
+}
+
+# Runs a HubSpot CLI command and handles its output
+# Arguments:
+#   $1 - The HubSpot CLI command to run
+#   $2 - Whether to expect and parse JSON output (true/false)
+#   $3 - Optional jq filter for parsing the output (required if $2 is true)
+# Outputs:
+#   Sets COMMAND_OUTPUT variable with the raw output
+#   Sets PARSED_OUTPUT variable with the jq-filtered output (if JSON parsing is enabled and successful)
+#   Returns the command's exit code
+run_hs_command() {
+  local command="$1"
+  local expect_json="${2:-false}"
+  local jq_filter="$3"
+
+  # Validate arguments
+  if [ "$expect_json" = "true" ] && [ -z "$jq_filter" ]; then
+    echo "Error: jq filter is required when JSON parsing is enabled"
+    return 1
+  fi
+
+  # Run command and capture output
+  COMMAND_OUTPUT=$(eval "$command")
+  local exit_code=$?
+
+  if [ $exit_code -ne 0 ]; then
+    echo "Error: Command failed with output:"
+    echo "$COMMAND_OUTPUT"
+    return $exit_code
+  fi
+
+  # Parse JSON if enabled
+  if [ "$expect_json" = "true" ]; then
+    if echo "$COMMAND_OUTPUT" | jq . >/dev/null 2>&1; then
+      PARSED_OUTPUT=$(echo "$COMMAND_OUTPUT" | jq -r "$jq_filter")
+      return 0
+    else
+      echo "Error: Failed to parse JSON output: $COMMAND_OUTPUT"
+      return 1
+    fi
+  fi
+
+  return 0
+} 

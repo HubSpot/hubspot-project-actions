@@ -27,24 +27,24 @@ runs:
         HUBSPOT_PERSONAL_ACCESS_KEY: ${{ inputs.personal_access_key }}
         HUBSPOT_ACCOUNT_ID: ${{ inputs.account_id }}
       run: |
-        if [ -z "${{ inputs.account_config_path }}" ]; then
-          echo "Error: account_config_path is required but was not set"
-          exit 1
-        fi
+        # Source shared utilities
+        . "$GITHUB_ACTION_PATH/../scripts/action-utils.sh"
 
         if [ ! -f "${{ inputs.account_config_path }}" ]; then
           echo "Error: Test account config file not found at path: ${{ inputs.account_config_path }}"
           exit 1
         fi
 
-        # Store the command output in a variable
-        output=$(hs test-account create --use-env --json --config-path "${{ inputs.account_config_path }}")
-        exit_code=$?
+        # Run test-account create command
+        run_hs_command \
+          "hs test-account create --use-env --json --config-path '${{ inputs.account_config_path }}'" \
+          "true" \
+          '{"personal_access_key":.personalAccessKey, "account_id":.accountId} | to_entries | .[] | "\(.key)=\(.value)"'
 
-        if [ $exit_code -eq 0 ]; then
-          echo "$output" | jq -r '{"personal_access_key":.personalAccessKey, "account_id":.accountId} | to_entries | .[] | "\(.key)=\(.value)"' >> "$GITHUB_OUTPUT"
-        else
-          echo "Error: Failed to create test account. Command output:"
-          echo "$output"
-          exit $exit_code
+        # Exit if command failed
+        if [ $? -ne 0 ]; then
+          exit 1
         fi
+
+        # Output the parsed results
+        echo "$PARSED_OUTPUT" >> "$GITHUB_OUTPUT"
