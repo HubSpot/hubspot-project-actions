@@ -63,7 +63,7 @@ runs:
         # Check CLI configuration
         echo "::group::CLI Configuration"
         echo "Checking CLI configuration..."
-        hs auth status --json || {
+        hs list || {
           echo "::error::Failed to verify CLI authentication"
           exit 1
         }
