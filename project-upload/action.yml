@@ -14,6 +14,10 @@ inputs:
     description: "HubSpot account ID associated with the personal-access-key. If not provided, will use DEFAULT_ACCOUNT_ID from environment."
     required: false
     type: number
+  cli_version:
+    description: "Version of the HubSpot CLI to install. If not provided, will use DEFAULT_CLI_VERSION from environment."
+    required: false
+    type: string
 outputs:
   build_id:
     description: "The build ID of the created HubSpot project build"
@@ -22,6 +26,17 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: Setup HubSpot CLI
+      shell: bash
+      env:
+        HUBSPOT_CLI_VERSION: ${{ inputs.cli_version || env.DEFAULT_CLI_VERSION }}
+      run: |
+        # Source shared utilities
+        . "$GITHUB_ACTION_PATH/../scripts/action-utils.sh"
+
+        # Setup CLI
+        setup_hubspot_cli
+
     - name: Upload source code to HubSpot Project
       shell: bash
       env:

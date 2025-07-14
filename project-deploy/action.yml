@@ -16,6 +16,10 @@ inputs:
     description: "HubSpot account ID associated with the personal-access-key. Also known as Portal ID. If not provided, will use DEFAULT_ACCOUNT_ID from environment."
     required: false
     type: number
+  cli_version:
+    description: "Version of the HubSpot CLI to install. If not provided, will use DEFAULT_CLI_VERSION from environment."
+    required: false
+    type: string
 outputs:
   deploy_id:
     description: The deploy ID of the initiated HubSpot project deploy
@@ -23,6 +27,17 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: Setup HubSpot CLI
+      shell: bash
+      env:
+        HUBSPOT_CLI_VERSION: ${{ inputs.cli_version || env.DEFAULT_CLI_VERSION }}
+      run: |
+        # Source shared utilities
+        . "$GITHUB_ACTION_PATH/../scripts/action-utils.sh"
+
+        # Setup CLI
+        setup_hubspot_cli
+
     - name: Deploy a HubSpot project build
       id: deploy-project
       shell: bash

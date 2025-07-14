@@ -13,9 +13,24 @@ inputs:
     description: "HubSpot account ID associated with the personal-access-key. If not provided, will use DEFAULT_ACCOUNT_ID from environment."
     required: false
     type: number
+  cli_version:
+    description: "Version of the HubSpot CLI to install. If not provided, will use DEFAULT_CLI_VERSION from environment."
+    required: false
+    type: string
 runs:
   using: "composite"
   steps:
+    - name: Setup HubSpot CLI
+      shell: bash
+      env:
+        HUBSPOT_CLI_VERSION: ${{ inputs.cli_version || env.DEFAULT_CLI_VERSION }}
+      run: |
+        # Source shared utilities
+        . "$GITHUB_ACTION_PATH/../scripts/action-utils.sh"
+
+        # Setup CLI
+        setup_hubspot_cli
+
     - name: Delete HubSpot test account
       shell: bash
       env:
@@ -36,5 +51,5 @@ runs:
 
         # Delete the test account
         run_hs_command \
-          "hs test-account delete --use-env --account-id '${{ inputs.test_account_id }}'" \
+          "hs test-account delete --use-env '${{ inputs.test_account_id }}'" \
           "false"
