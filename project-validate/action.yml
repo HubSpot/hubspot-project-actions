@@ -14,9 +14,6 @@ inputs:
     description: "HubSpot account ID associated with the personal-access-key."
     required: true
     type: number
-outputs:
-  validation_result:
-    description: "The validation result of the HubSpot project"
 runs:
   using: "composite"
   steps:
@@ -27,4 +24,15 @@ runs:
         HUBSPOT_ACCOUNT_ID: ${{ inputs.account_id }}
       working-directory: ${{ inputs.project_dir }}
       run: |
-        hs project validate --use-env | jq -r '{"validation_result":.result} | to_entries | .[] | "\(.key)=\(.value)"' >> "$GITHUB_OUTPUT"
+        if [ ! -d "${{ inputs.project_dir }}" ]; then
+          echo "Error: Project directory not found at path: ${{ inputs.project_dir }}"
+          exit 1
+        fi
+
+        if [ ! -f "hsproject.json" ]; then
+          echo "Error: hsproject.json not found in directory: ${{ inputs.project_dir }}"
+          exit 1
+        fi
+
+        # Run validation - command will exit with non-zero if validation fails
+        hs project validate --use-env
