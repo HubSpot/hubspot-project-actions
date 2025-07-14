@@ -121,7 +121,5 @@ set_output_from_json() {
   # Set the output
   echo "$output_name=$value" >> $GITHUB_OUTPUT
   
-  # Debug: Print what we just set
-  echo "Debug: Set output $output_name with value: $value"
   return 0
 }

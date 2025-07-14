@@ -47,15 +47,6 @@ runs:
           "hs test-account create --use-env --json --config-path '${{ inputs.account_config_path }}'" \
           "true"
 
-        # Debug: Show raw JSON
-        echo "Debug: Raw JSON output:"
-        echo "$PARSED_OUTPUT" | jq '.'
-
         # Parse and set outputs
         set_output_from_json "personal_access_key" ".personalAccessKey"
         set_output_from_json "account_id" ".accountId"
-
-        # Debug: Verify outputs were set
-        echo "Debug: Outputs set in create-test-account action:"
-        echo "GITHUB_OUTPUT contents:"
-        cat $GITHUB_OUTPUT
