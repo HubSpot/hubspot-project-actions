@@ -18,12 +18,26 @@ jobs:
           account_config_path: ./.github/workflows/test-account-config.json
           personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
           account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
+
+      - name: Debug Test Account Outputs
+        run: |
+          echo "Test account creation outputs:"
+          echo "account_id: ${{ steps.test-account-create-step.outputs.account_id }}"
+          echo "personal_access_key: ${{ steps.test-account-create-step.outputs.personal_access_key }}"
+
       - name: HubSpot Project Validation Action
         uses: ./project-validate
         with:
           project_dir: ./.github/workflows/example-project
           personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
           account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
+
+      - name: Debug Project Upload Inputs
+        run: |
+          echo "Project upload inputs:"
+          echo "account_id to be used: ${{ steps.test-account-create-step.outputs.account_id }}"
+          echo "personal_access_key to be used: ${{ steps.test-account-create-step.outputs.personal_access_key }}"
+
       - name: HubSpot Project Upload Action
         uses: ./project-upload
         with:
@@ -31,9 +45,14 @@ jobs:
           personal_access_key: ${{ steps.test-account-create-step.outputs.personal_access_key }}
           account_id: ${{ steps.test-account-create-step.outputs.account_id }}
 
+      - name: Debug Job Outputs
+        run: |
+          echo "Job outputs that will be available to cleanup job:"
+          echo "test_account_id: ${{ steps.test-account-create-step.outputs.account_id }}"
+
   cleanup:
     needs: deploy
-    if: always()
+    if: always() && needs.deploy.outputs.test_account_id != ''
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
