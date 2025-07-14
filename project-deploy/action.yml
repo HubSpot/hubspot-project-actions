@@ -1,19 +1,19 @@
-name: 'Project Deploy'
-description: 'Deploy a project build'
+name: "Project Deploy"
+description: "Deploy a project build"
 inputs:
   build_id:
-    description: 'Build ID to deploy'
-    required: true 
+    description: "Build ID to deploy"
+    required: true
   project_dir:
-    description: 'Directory where hsproject.json is'
+    description: "Directory where hsproject.json is"
     required: true
     default: ./
-  personal-access-key: 
-    description: '[SECRET] Personal Access Key, generated in HubSpot, to use the CLI.'
+  personal_access_key:
+    description: "[SECRET] Personal Access Key, generated in HubSpot, to use the CLI."
     required: true
     type: string
-  account-id: 
-    description: 'HubSpot account ID associated with the personal-access-key. Also known as Portal ID.'
+  account_id:
+    description: "HubSpot account ID associated with the personal-access-key. Also known as Portal ID."
     required: true
     type: number
 outputs:
