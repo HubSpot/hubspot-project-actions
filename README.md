@@ -131,6 +131,7 @@ Uploads and builds a HubSpot project in your account. If auto-deploy is enabled,
 **Outputs:**
 
 - `build_id`: The build ID of the created HubSpot project build
+- `deploy_id`: The deploy ID of the initiated HubSpot project deploy. This is only set if auto-deploy is enabled for your project.
 
 **Example usage:**
 

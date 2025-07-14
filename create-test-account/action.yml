@@ -42,13 +42,8 @@ runs:
         # Run test-account create command
         run_hs_command \
           "hs test-account create --use-env --json --config-path '${{ inputs.account_config_path }}'" \
-          "true" \
-          '{"personal_access_key":.personalAccessKey, "account_id":.accountId} | to_entries | .[] | "\(.key)=\(.value)"'
+          "true"
 
-        # Exit if command failed
-        if [ $? -ne 0 ]; then
-          exit 1
-        fi
-
-        # Output the parsed results
-        echo "$PARSED_OUTPUT" >> "$GITHUB_OUTPUT"
+        # Parse and set outputs
+        set_output_from_json "personal_access_key" ".personalAccessKey"
+        set_output_from_json "account_id" ".accountId"

@@ -2,6 +2,8 @@ on: [push, workflow_dispatch]
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    outputs:
+      test_account_id: ${{ steps.test-account-create-step.outputs.account_id }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
@@ -28,9 +30,17 @@ jobs:
           project_dir: ./.github/workflows/example-project
           personal_access_key: ${{ steps.test-account-create-step.outputs.personal_access_key }}
           account_id: ${{ steps.test-account-create-step.outputs.account_id }}
+
+  cleanup:
+    needs: deploy
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.3
       - name: HubSpot Delete Test Account Action
         uses: ./delete-test-account
         with:
-          test_account_id: ${{ steps.test-account-create-step.outputs.account_id }}
+          test_account_id: ${{ needs.deploy.outputs.test_account_id }}
           personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
           account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}

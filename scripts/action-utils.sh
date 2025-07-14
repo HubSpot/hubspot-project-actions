@@ -56,21 +56,13 @@ resolve_project_dir() {
 # Arguments:
 #   $1 - The HubSpot CLI command to run
 #   $2 - Whether to expect and parse JSON output (true/false)
-#   $3 - Optional jq filter for parsing the output (required if $2 is true)
 # Outputs:
 #   Sets COMMAND_OUTPUT variable with the raw output
-#   Sets PARSED_OUTPUT variable with the jq-filtered output (if JSON parsing is enabled and successful)
+#   Sets PARSED_OUTPUT variable with the parsed JSON (if JSON parsing is enabled and successful)
 #   Returns the command's exit code
 run_hs_command() {
   local command="$1"
   local expect_json="${2:-false}"
-  local jq_filter="$3"
-
-  # Validate arguments
-  if [ "$expect_json" = "true" ] && [ -z "$jq_filter" ]; then
-    echo "Error: jq filter is required when JSON parsing is enabled"
-    return 1
-  fi
 
   # Run command and capture output
   COMMAND_OUTPUT=$(eval "$command")
@@ -79,19 +71,54 @@ run_hs_command() {
   if [ $exit_code -ne 0 ]; then
     echo "Error: Command failed with output:"
     echo "$COMMAND_OUTPUT"
-    return $exit_code
+    exit $exit_code
   fi
 
   # Parse JSON if enabled
   if [ "$expect_json" = "true" ]; then
     if echo "$COMMAND_OUTPUT" | jq . >/dev/null 2>&1; then
-      PARSED_OUTPUT=$(echo "$COMMAND_OUTPUT" | jq -r "$jq_filter")
+      PARSED_OUTPUT=$(echo "$COMMAND_OUTPUT" | jq '.')
       return 0
     else
       echo "Error: Failed to parse JSON output: $COMMAND_OUTPUT"
-      return 1
+      exit 1
     fi
   fi
 
+  return 0
+} 
+
+# Sets a GitHub Actions output from JSON, using the global PARSED_OUTPUT variable
+# Automatically exits with code 1 if a required output is missing
+# Arguments:
+#   $1 - The output name to set
+#   $2 - The JSON path to extract
+#   $3 - Whether the output is optional (true/false), defaults to false
+set_output_from_json() {
+  local output_name="$1"
+  local json_path="$2"
+  local is_optional="${3:-false}"
+
+  if [ -z "$PARSED_OUTPUT" ]; then
+    echo "Error: No JSON output available. Make sure run_hs_command was called first."
+    exit 1
+  fi
+
+  # Extract the value using jq
+  local value
+  value=$(echo "$PARSED_OUTPUT" | jq -r "$json_path")
+
+  # Check if value exists and is not null
+  if [ "$value" = "null" ] || [ -z "$value" ]; then
+    if [ "$is_optional" = "true" ]; then
+      return 0
+    else
+      echo "Error: Required output '$output_name' not found in JSON at path: $json_path"
+      exit 1
+    fi
+  fi
+
+  # Set the output
+  echo "$output_name=$value" >> $GITHUB_OUTPUT
   return 0
 } 

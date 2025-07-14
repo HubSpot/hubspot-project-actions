@@ -17,6 +17,8 @@ inputs:
 outputs:
   build_id:
     description: "The build ID of the created HubSpot project build"
+  deploy_id:
+    description: "The deploy ID if auto-deploy is enabled"
 runs:
   using: "composite"
   steps:
@@ -38,13 +40,8 @@ runs:
         # Run upload command
         run_hs_command \
           "hs project upload --force-create --use-env --json --message '${{ github.event.head_commit.message || 'Uploaded via HubSpot GitHub Action' }} (${GITHUB_SHA:0:7})'" \
-          "true" \
-          '{"build_id":.buildId, "deploy_id":.deployId} | to_entries | .[] | "\(.key)=\(.value)"'
+          "true"
 
-        # Exit if command failed
-        if [ $? -ne 0 ]; then
-          exit 1
-        fi
-
-        # Output the parsed results
-        echo "$PARSED_OUTPUT" >> "$GITHUB_OUTPUT"
+        # Parse and set outputs
+        set_output_from_json "build_id" ".buildId"
+        set_output_from_json "deploy_id" ".deployId" "true"
