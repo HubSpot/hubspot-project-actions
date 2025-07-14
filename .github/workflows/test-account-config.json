@@ -1,0 +1,9 @@
+{
+  "accountName": "project-actions-test-account",
+  "description": "Test account for project actions",
+  "marketingLevel": "ENTERPRISE",
+  "opsLevel": "ENTERPRISE",
+  "serviceLevel": "ENTERPRISE",
+  "salesLevel": "ENTERPRISE",
+  "contentLevel": "ENTERPRISE"
+}

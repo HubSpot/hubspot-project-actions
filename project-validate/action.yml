@@ -27,4 +27,4 @@ runs:
         HUBSPOT_ACCOUNT_ID: ${{ inputs.account_id }}
       working-directory: ${{ inputs.project_dir }}
       run: |
-        hs project validate --json | jq -r '{"validation_result":.result} | to_entries | .[] | "\(.key)=\(.value)"' >> "$GITHUB_OUTPUT"
+        hs project validate | jq -r '{"validation_result":.result} | to_entries | .[] | "\(.key)=\(.value)"' >> "$GITHUB_OUTPUT"

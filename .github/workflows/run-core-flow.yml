@@ -5,13 +5,26 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
-      - name: HubSpot CLI Install
+      - name: HubSpot CLI Install Action
         uses: ./install-cli
         with:
           cli_version: 7.7.16-experimental.2
-      - name: HubSpot Project Upload Action
-        uses: ./project-upload
+      - name: HubSpot Test Account Creation Action
+        id: test-account-create-step
+        uses: ./create-test-account
+        with:
+          account_config_path: ./.github/workflows/test-account-config.json
+          account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
+          personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
+      - name: HubSpot Project Validation Action
+        uses: ./project-validate
         with:
           account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
           personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
+          project_dir: ./.github/workflows/example-project
+      - name: HubSpot Project Upload Action
+        uses: ./project-upload
+        with:
+          account_id: ${{ steps.test-account-create-step.outputs.account_id }}
+          personal_access_key: ${{ steps.test-account-create-step.outputs.personal_access_key }}
           project_dir: ./.github/workflows/example-project
