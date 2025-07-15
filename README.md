@@ -66,7 +66,7 @@ This should enable automatic uploads to your target HubSpot account with every c
 
 ## Available Actions
 
-### `create-test-account`
+### `Create Test Account`
 
 Creates a new HubSpot test account based on a configuration file. This action allows you to programmatically create test accounts with predefined settings.
 
@@ -90,7 +90,7 @@ Creates a new HubSpot test account based on a configuration file. This action al
     account_config_path: "./test-account-config.json"
 ```
 
-### `delete-test-account`
+### `Delete Test Account`
 
 Deletes a HubSpot test account. This action is typically used to clean up test accounts after running tests.
 
