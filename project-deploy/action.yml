@@ -5,7 +5,7 @@ inputs:
     description: "Build ID to deploy"
     required: true
   project_dir:
-    description: "Directory where hsproject.json is"
+    description: "The path to the directory where your hsproject.json file is located"
     required: true
     default: ./
   personal_access_key:
