@@ -24,6 +24,15 @@ In your GitHub repo, create two new [secrets](https://docs.github.com/en/free-pr
 - `HUBSPOT_ACCOUNT_ID` - This is your HubSpot account ID
 - `HUBSPOT_PERSONAL_ACCESS_KEY` - Your [personal access key](https://developers.hubspot.com/docs/cms/personal-cms-access-key)
 
+Alternatively, you can set these as environment variables at the workflow level:
+
+```yaml
+env:
+  DEFAULT_ACCOUNT_ID: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
+  DEFAULT_PERSONAL_ACCESS_KEY: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
+  DEFAULT_CLI_VERSION: "latest" # Optional: specify a CLI version (it will default to latest if unset)
+```
+
 This guide walks through setting up a new workflow file that automatically uploads new changes on your `main` branch to your HubSpot account.
 
 1. In your project, create a GitHub Action workflow file at `.github/workflows/main.yml`
@@ -36,19 +45,17 @@ on:
   push:
     branches:
       - main
+env:
+  DEFAULT_ACCOUNT_ID: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
+  DEFAULT_PERSONAL_ACCESS_KEY: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
-      - name: HubSpot CLI Install
-        uses: HubSpot/hubspot-project-actions/install-cli@v1.0
       - name: HubSpot Project Upload Action
         uses: HubSpot/hubspot-project-actions/project-upload@v1.0
-        with:
-          account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
-          personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
 ```
 
 3. Commit and merge your changes
@@ -59,22 +66,6 @@ This should enable automatic uploads to your target HubSpot account with every c
 
 ## Available Actions
 
-### `install-cli`
-
-Installs the HubSpot CLI for usage in actions. This action sets up Node.js and installs the HubSpot CLI globally.
-
-**Inputs:**
-
-- `cli_version` (optional): Version of HubSpot CLI to install from NPM. Defaults to "latest"
-
-**Example usage:**
-
-```yaml
-- uses: HubSpot/hubspot-project-actions/install-cli@v1
-  with:
-    cli_version: "latest" # optional
-```
-
 ### `create-test-account`
 
 Creates a new HubSpot test account based on a configuration file. This action allows you to programmatically create test accounts with predefined settings.
@@ -82,8 +73,9 @@ Creates a new HubSpot test account based on a configuration file. This action al
 **Inputs:**
 
 - `account_config_path` (required): Path to the test account configuration file
-- `personal_access_key` (required): Personal Access Key generated in HubSpot that grants access to the CLI
-- `account_id` (required): HubSpot account ID associated with the personal access key
+- `personal_access_key` (optional): Personal Access Key generated in HubSpot that grants access to the CLI. If not provided, will use DEFAULT_PERSONAL_ACCESS_KEY from environment.
+- `account_id` (optional): HubSpot account ID associated with the personal access key. If not provided, will use DEFAULT_ACCOUNT_ID from environment.
+- `cli_version` (optional): Version of the HubSpot CLI to install. If not provided, will use DEFAULT_CLI_VERSION from environment.
 
 **Outputs:**
 
@@ -96,23 +88,42 @@ Creates a new HubSpot test account based on a configuration file. This action al
 - uses: HubSpot/hubspot-project-actions/create-test-account@v1
   with:
     account_config_path: "./test-account-config.json"
-    personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
-    account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
 ```
 
-### `project-upload`
+### `delete-test-account`
+
+Deletes a HubSpot test account. This action is typically used to clean up test accounts after running tests.
+
+**Inputs:**
+
+- `personal_access_key` (optional): Personal Access Key of the test account to be deleted. If not provided, will use DEFAULT_PERSONAL_ACCESS_KEY from environment.
+- `account_id` (optional): Account ID of the test account to be deleted. If not provided, will use DEFAULT_ACCOUNT_ID from environment.
+- `cli_version` (optional): Version of the HubSpot CLI to install. If not provided, will use DEFAULT_CLI_VERSION from environment.
+
+**Example usage:**
+
+```yaml
+- uses: HubSpot/hubspot-project-actions/delete-test-account@v1
+  with:
+    personal_access_key: ${{ steps.create-test-account.outputs.personal_access_key }}
+    account_id: ${{ steps.create-test-account.outputs.account_id }}
+```
+
+### `Project Upload`
 
 Uploads and builds a HubSpot project in your account. If auto-deploy is enabled, the build will also be deployed to your account.
 
 **Inputs:**
 
 - `project_dir` (optional): The path to the directory where your hsproject.json file is located. Defaults to "./"
-- `personal_access_key` (required): Personal Access Key generated in HubSpot that grants access to the CLI
-- `account_id` (required): HubSpot account ID associated with the personal access key
+- `personal_access_key` (optional): Personal Access Key generated in HubSpot that grants access to the CLI. If not provided, will use DEFAULT_PERSONAL_ACCESS_KEY from environment.
+- `account_id` (optional): HubSpot account ID associated with the personal access key. If not provided, will use DEFAULT_ACCOUNT_ID from environment.
+- `cli_version` (optional): Version of the HubSpot CLI to install. If not provided, will use DEFAULT_CLI_VERSION from environment.
 
 **Outputs:**
 
 - `build_id`: The build ID of the created HubSpot project build
+- `deploy_id`: The deploy ID of the initiated HubSpot project deploy. This is only set if auto-deploy is enabled for your project.
 
 **Example usage:**
 
@@ -120,11 +131,9 @@ Uploads and builds a HubSpot project in your account. If auto-deploy is enabled,
 - uses: HubSpot/hubspot-project-actions/project-upload@v1
   with:
     project_dir: "./my-project" # optional
-    personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
-    account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
 ```
 
-### `project-deploy`
+### `Project Deploy`
 
 Deploys a specific build of a HubSpot project.
 
@@ -132,8 +141,9 @@ Deploys a specific build of a HubSpot project.
 
 - `build_id` (required): Build ID to deploy
 - `project_dir` (optional): Directory where hsproject.json is located. Defaults to "./"
-- `personal_access_key` (required): Personal Access Key generated in HubSpot that grants access to the CLI
-- `account_id` (required): HubSpot account ID associated with the personal access key
+- `personal_access_key` (optional): Personal Access Key generated in HubSpot that grants access to the CLI. If not provided, will use DEFAULT_PERSONAL_ACCESS_KEY from environment.
+- `account_id` (optional): HubSpot account ID associated with the personal access key. If not provided, will use DEFAULT_ACCOUNT_ID from environment.
+- `cli_version` (optional): Version of the HubSpot CLI to install. If not provided, will use DEFAULT_CLI_VERSION from environment.
 
 **Outputs:**
 
@@ -146,23 +156,18 @@ Deploys a specific build of a HubSpot project.
   with:
     build_id: ${{ steps.upload.outputs.build_id }}
     project_dir: "./my-project" # optional
-    personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
-    account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
 ```
 
-### `project-validate`
+### `Project Validate`
 
 Validates the configuration of a HubSpot project.
 
 **Inputs:**
 
 - `project_dir` (optional): The path to the directory where your hsproject.json file is located. Defaults to "./"
-- `personal_access_key` (required): Personal Access Key generated in HubSpot that grants access to the CLI
-- `account_id` (required): HubSpot account ID associated with the personal access key
-
-**Outputs:**
-
-- `validation_result`: The validation result of the HubSpot project
+- `personal_access_key` (optional): Personal Access Key generated in HubSpot that grants access to the CLI. If not provided, will use DEFAULT_PERSONAL_ACCESS_KEY from environment.
+- `account_id` (optional): HubSpot account ID associated with the personal access key. If not provided, will use DEFAULT_ACCOUNT_ID from environment.
+- `cli_version` (optional): Version of the HubSpot CLI to install. If not provided, will use DEFAULT_CLI_VERSION from environment.
 
 **Example usage:**
 
@@ -170,6 +175,4 @@ Validates the configuration of a HubSpot project.
 - uses: HubSpot/hubspot-project-actions/project-validate@v1
   with:
     project_dir: "./my-project" # optional
-    personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
-    account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
 ```

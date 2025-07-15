@@ -1,15 +1,42 @@
 on: [push, workflow_dispatch]
+
+env:
+  DEFAULT_PERSONAL_ACCESS_KEY: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
+  DEFAULT_ACCOUNT_ID: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
+  DEFAULT_CLI_VERSION: "7.7.16-experimental.2"
+
 jobs:
   deploy:
+    runs-on: ubuntu-latest
+    outputs:
+      test_account_id: ${{ steps.test-account-create-step.outputs.account_id }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.3
+      - name: HubSpot Test Account Creation Action
+        id: test-account-create-step
+        uses: ./create-test-account
+        with:
+          account_config_path: ./.github/workflows/test-account-config.json
+      - name: HubSpot Project Validation Action
+        uses: ./project-validate
+        with:
+          project_dir: ./.github/workflows/example-project
+      - name: HubSpot Project Upload Action
+        uses: ./project-upload
+        with:
+          project_dir: ./.github/workflows/example-project
+          personal_access_key: ${{ steps.test-account-create-step.outputs.personal_access_key }}
+          account_id: ${{ steps.test-account-create-step.outputs.account_id }}
+
+  cleanup:
+    needs: deploy
+    if: always() && needs.deploy.outputs.test_account_id != ''
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
-      - name: HubSpot CLI Install
-        uses: HubSpot/hubspot-project-actions/install-cli@v1.0
-      - name: HubSpot Project Upload Action
-        uses: HubSpot/hubspot-project-actions/project-upload@v1.0
+      - name: HubSpot Delete Test Account Action
+        uses: ./delete-test-account
         with:
-          account_id: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
-          personal_access_key: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
-          project_dir: ./.github/workflows/example-project
+          test_account_id: ${{ needs.deploy.outputs.test_account_id }}

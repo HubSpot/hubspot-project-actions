@@ -1,10 +1,9 @@
-name: "Project Upload"
-description: "Upload and build a HubSpot project in your account. If auto-deploy is enabled, the build will also be deployed to your account."
+name: "Delete Test Account"
+description: "Delete a test account"
 inputs:
-  project_dir:
-    description: "The path to the directory where your hsproject.json file is located"
+  test_account_id:
+    description: "The account ID of the test account to delete"
     required: true
-    default: ./
     type: string
   personal_access_key:
     description: "[SECRET] Personal Access Key generated in HubSpot that grants access to the CLI. If not provided, will use DEFAULT_PERSONAL_ACCESS_KEY from environment."
@@ -18,11 +17,6 @@ inputs:
     description: "Version of the HubSpot CLI to install. If not provided, will use DEFAULT_CLI_VERSION from environment."
     required: false
     type: string
-outputs:
-  build_id:
-    description: "The build ID of the created HubSpot project build"
-  deploy_id:
-    description: "The deploy ID if auto-deploy is enabled"
 runs:
   using: "composite"
   steps:
@@ -37,7 +31,7 @@ runs:
         # Setup CLI
         setup_hubspot_cli
 
-    - name: Upload source code to HubSpot Project
+    - name: Delete HubSpot test account
       shell: bash
       env:
         HUBSPOT_PERSONAL_ACCESS_KEY: ${{ inputs.personal_access_key || env.DEFAULT_PERSONAL_ACCESS_KEY }}
@@ -49,16 +43,15 @@ runs:
         # Validate account and personal access key
         validate_account_and_personal_access_key
 
-        # Resolve and validate project directory
-        resolve_project_dir "${{ inputs.project_dir }}"
+        # Validate test account ID
+        if [ -z "${{ inputs.test_account_id }}" ]; then
+          echo "Error: test_account_id is required but was not set"
+          exit 1
+        fi
 
-        # Run upload command
+        # Delete the test account
         run_hs_command \
-          "hs project upload --force-create --use-env --json --message '${{ github.event.head_commit.message || 'Uploaded via HubSpot GitHub Action' }} (${GITHUB_SHA:0:7})'" \
-          "true"
+          "hs test-account delete --use-env '${{ inputs.test_account_id }}'" \
+          "false"
 
-        # Parse and set outputs
-        set_output_from_json "build_id" ".buildId"
-        set_output_from_json "deploy_id" ".deployId" "true"
-
-        echo "✅ Project upload completed successfully"
+        echo "✅ Test account deleted successfully"

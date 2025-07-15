@@ -1,32 +1,71 @@
-name: 'Project Deploy'
-description: 'Deploy a project build'
+name: "Project Deploy"
+description: "Deploy a project build"
 inputs:
   build_id:
-    description: 'Build ID to deploy'
-    required: true 
+    description: "Build ID to deploy"
+    required: true
   project_dir:
-    description: 'Directory where hsproject.json is'
+    description: "Directory where hsproject.json is"
     required: true
     default: ./
-  personal-access-key: 
-    description: '[SECRET] Personal Access Key, generated in HubSpot, to use the CLI.'
-    required: true
+  personal_access_key:
+    description: "[SECRET] Personal Access Key, generated in HubSpot, to use the CLI. If not provided, will use DEFAULT_PERSONAL_ACCESS_KEY from environment."
+    required: false
     type: string
-  account-id: 
-    description: 'HubSpot account ID associated with the personal-access-key. Also known as Portal ID.'
-    required: true
+  account_id:
+    description: "HubSpot account ID associated with the personal-access-key. Also known as Portal ID. If not provided, will use DEFAULT_ACCOUNT_ID from environment."
+    required: false
     type: number
+  cli_version:
+    description: "Version of the HubSpot CLI to install. If not provided, will use DEFAULT_CLI_VERSION from environment."
+    required: false
+    type: string
 outputs:
   deploy_id:
-    description: The deploy ID of the initaited HubSpot project deploy
+    description: The deploy ID of the initiated HubSpot project deploy
+    value: ${{ steps.deploy-project.outputs.deploy_id }}
 runs:
   using: "composite"
   steps:
-    - name: Deploy a HubSpot project build
+    - name: Setup HubSpot CLI
       shell: bash
       env:
-        HUBSPOT_PERSONAL_ACCESS_KEY: ${{ inputs.personal-access-key }}
-        HUBSPOT_ACCOUNT_ID: ${{ inputs.account-id }}
-      working-directory: ${{ inputs.project_dir }}
+        HUBSPOT_CLI_VERSION: ${{ inputs.cli_version || env.DEFAULT_CLI_VERSION }}
       run: |
-        hs project deploy --build ${{ inputs.build_id }}  --use-env | grep 'Deploy' | awk -F "#" '{print $2}' | awk '{print "deploy_id=" $1}' >> "$GITHUB_OUTPUT"
+        # Source shared utilities
+        . "$GITHUB_ACTION_PATH/../scripts/action-utils.sh"
+
+        # Setup CLI
+        setup_hubspot_cli
+
+    - name: Deploy a HubSpot project build
+      id: deploy-project
+      shell: bash
+      env:
+        HUBSPOT_PERSONAL_ACCESS_KEY: ${{ inputs.personal_access_key || env.DEFAULT_PERSONAL_ACCESS_KEY }}
+        HUBSPOT_ACCOUNT_ID: ${{ inputs.account_id || env.DEFAULT_ACCOUNT_ID }}
+      run: |
+        # Source shared utilities
+        . "$GITHUB_ACTION_PATH/../scripts/action-utils.sh"
+
+        # Validate account and personal access key
+        validate_account_and_personal_access_key
+
+        # Resolve and validate project directory
+        resolve_project_dir "${{ inputs.project_dir }}"
+
+        # Validate build ID
+        if [ -z "${{ inputs.build_id }}" ]; then
+          echo "Error: build_id is required but was not set"
+          exit 1
+        fi
+
+        # Run deploy command
+        run_hs_command \
+          "hs project deploy --use-env --json --build ${{ inputs.build_id }}" \
+          "true"
+
+        # Parse and set outputs
+        set_output_from_json "deploy_id" ".deployId"
+
+        echo "✅ Project deployment initiated successfully"
