@@ -26,7 +26,7 @@ env:
   DEFAULT_CLI_VERSION: "latest" # Optional: specify a CLI version (it will default to latest if unset)
 ```
 
-This guide walks through setting up a new workflow file that automatically uploads new changes on your `main` branch to your HubSpot account.
+Now, set up a new workflow file that automatically uploads new changes on your `main` branch to your HubSpot account.
 
 1. In your project, create a GitHub Action workflow file at `.github/workflows/main.yml`
 2. Copy the following example workflow into your `main.yml` file.

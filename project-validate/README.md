@@ -10,12 +10,28 @@ Validates the configuration of a HubSpot project.
 - `cli_version` (optional): Version of the HubSpot CLI to install. If not provided, will use DEFAULT_CLI_VERSION from environment.
 
 **Outputs:**
+
 No outputs.
 
 **Example usage:**
 
+On every code push, validate the project.
+
 ```yaml
-- uses: HubSpot/hubspot-project-actions/project-validate@v1
-  with:
-    project_dir: "./my-project" # optional
+on: [push]
+
+env:
+  DEFAULT_ACCOUNT_ID: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
+  DEFAULT_PERSONAL_ACCESS_KEY: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.3
+      - name: HubSpot Project Validation
+        uses: HubSpot/hubspot-project-actions/project-validate@v1
+        with:
+          project_dir: "./my-project" # optional
 ```

@@ -16,8 +16,26 @@ Uploads and builds a HubSpot project in your account. If auto-deploy is enabled,
 
 **Example usage:**
 
+On every code push into the main branch, upload the project into the target account.
+
 ```yaml
-- uses: HubSpot/hubspot-project-actions/project-upload@v1
-  with:
-    project_dir: "./my-project" # optional
+on:
+  push:
+    branches:
+      - main
+
+env:
+  DEFAULT_ACCOUNT_ID: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
+  DEFAULT_PERSONAL_ACCESS_KEY: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.3
+      - name: HubSpot Project Upload
+        uses: HubSpot/hubspot-project-actions/project-upload@v1
+        with:
+          project_dir: "./my-project" # optional
 ```
