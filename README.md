@@ -1,12 +1,12 @@
-# HubSpot Project Actions
+# Official HubSpot Project Actions
 
 :warning: This is pre-release software. It is unstable and subject to breaking changes.
 
-For now, we recommend using the [current project upload action](https://github.com/HubSpot/hubspot-project-upload-action)
+For now, we recommend using the more stable [current project upload action](https://github.com/HubSpot/hubspot-project-upload-action)
 
-## Official HubSpot Project Actions
+---
 
-Use these composable actions to upload, deploy, and test your Developer Projects in HubSpot. These actions are modular so you can organize them into a flow that best suits your needs.
+Use these composable actions to upload, deploy, and test your HubSpot Developer Projects. These actions are modular so you can arrange them into a workflow that best suits your needs.
 
 Don't know where to start? Follow the usage guide below to set up a basic flow to upload your project into your HubSpot account.
 
