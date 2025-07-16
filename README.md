@@ -6,7 +6,7 @@ For now, we recommend using the more stable [current project upload action](http
 
 ---
 
-Use these composable actions to upload, deploy, and test your Developer Projects in HubSpot. These actions are modular so you can organize them into a flow that best suits your needs.
+Use these composable actions to upload, deploy, and test your HubSpot Developer Projects. These actions are modular so you can arrange them into a workflow that best suits your needs.
 
 Don't know where to start? Follow the usage guide below to set up a basic flow to upload your project into your HubSpot account.
 
