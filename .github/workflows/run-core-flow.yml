@@ -3,7 +3,7 @@ on: [push, workflow_dispatch]
 env:
   DEFAULT_PERSONAL_ACCESS_KEY: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
   DEFAULT_ACCOUNT_ID: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
-  DEFAULT_CLI_VERSION: "7.7.16-experimental.2"
+  DEFAULT_CLI_VERSION: "7.7.16-experimental.3"
 
 jobs:
   deploy:
@@ -34,8 +34,6 @@ jobs:
     if: always() && needs.deploy.outputs.test_account_id != ''
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2.3.3
       - name: HubSpot Delete Test Account Action
         uses: ./delete-test-account
         with:
