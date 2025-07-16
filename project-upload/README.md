@@ -1,6 +1,6 @@
-# `Project Validate` Action
+# `Project Upload` Action
 
-Validates the configuration of a HubSpot project.
+Uploads and builds a HubSpot project in your account. If auto-deploy is enabled, the build will also be deployed to your account.
 
 **Inputs:**
 
@@ -10,12 +10,14 @@ Validates the configuration of a HubSpot project.
 - `cli_version` (optional): Version of the HubSpot CLI to install. If not provided, will use DEFAULT_CLI_VERSION from environment.
 
 **Outputs:**
-No outputs.
+
+- `build_id`: The build ID of the created HubSpot project build
+- `deploy_id`: The deploy ID of the initiated HubSpot project deploy. This is only set if auto-deploy is enabled for your project.
 
 **Example usage:**
 
 ```yaml
-- uses: HubSpot/hubspot-project-actions/project-validate@v1
+- uses: HubSpot/hubspot-project-actions/project-upload@v1
   with:
     project_dir: "./my-project" # optional
 ```
