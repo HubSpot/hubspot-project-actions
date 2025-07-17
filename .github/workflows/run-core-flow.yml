@@ -13,15 +13,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
+      - name: HubSpot Project Validation Action
+        uses: ./project-validate
+        with:
+          project_dir: ./.github/workflows/example-project
       - name: HubSpot Test Account Creation Action
         id: test-account-create-step
         uses: ./create-test-account
         with:
           account_config_path: ./.github/workflows/test-account-config.json
-      - name: HubSpot Project Validation Action
-        uses: ./project-validate
-        with:
-          project_dir: ./.github/workflows/example-project
       - name: HubSpot Project Upload Action
         uses: ./project-upload
         with:
