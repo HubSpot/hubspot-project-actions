@@ -41,6 +41,8 @@ jobs:
     if: always() && needs.deploy.outputs.test_account_id != ''
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.3
       - name: HubSpot Delete Test Account
         uses: HubSpot/hubspot-project-actions/delete-test-account@v1
         with:
