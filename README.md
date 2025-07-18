@@ -156,8 +156,7 @@ See the [install-hubspot-cli docs](./install-hubspot-cli/README.md) for detailed
 **Example usage:**
 
 ```yaml
-- name: Install HubSpot CLI Action
-  uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1
+- uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1
   with:
     cli_version: "7.0.0"
 ```
