@@ -1,6 +1,6 @@
 #!/bin/bash
 
-setup_hubspot_cli() {
+install_hubspot_cli() {
   # Default to "latest" if HUBSPOT_CLI_VERSION is unset
   HUBSPOT_CLI_VERSION="${HUBSPOT_CLI_VERSION:-latest}"
 

@@ -1,0 +1,20 @@
+name: "Install HubSpot CLI"
+description: "Install the HubSpot CLI"
+inputs:
+  cli_version:
+    description: "Version of the HubSpot CLI to install. If not provided, will default to latest."
+    required: true
+    type: string
+runs:
+  using: "composite"
+  steps:
+    - name: Install HubSpot CLI
+      shell: bash
+      env:
+        HUBSPOT_CLI_VERSION: ${{ inputs.cli_version }}
+      run: |
+        # Source shared utilities
+        . "$GITHUB_ACTION_PATH/../scripts/action-utils.sh"
+
+        # Install CLI
+        install_hubspot_cli

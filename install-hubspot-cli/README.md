@@ -1,0 +1,37 @@
+# `Install HubSpot CLI` Action
+
+Installs the HubSpot CLI. Only installs if the cli has not already been installed by an earlier step.
+
+**Note:** All of the HubSpot actions leverage this action. In most cases you shouldn't need to use this directly.
+
+**Inputs:**
+
+- `cli_version` (required): Version of the HubSpot CLI to install. Defaults to `latest`
+
+**Outputs:**
+No outputs.
+
+**Example usage:**
+
+On every code push, install the HubSpot CLI.
+
+```yaml
+on: [push]
+
+env:
+  DEFAULT_PERSONAL_ACCESS_KEY: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
+  DEFAULT_ACCOUNT_ID: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    outputs:
+      test_account_id: ${{ steps.test-account-create-step.outputs.account_id }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.3
+      - name: Install HubSpot CLI Action
+        uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1
+        with:
+          cli_version: "7.0.0"
+```

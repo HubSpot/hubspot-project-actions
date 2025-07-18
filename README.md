@@ -132,3 +132,28 @@ See the [project-validate docs](./project-validate/README.md) for detailed specs
   with:
     project_dir: "./my-project" # optional
 ```
+
+### `Install OAuth App`
+
+Installs your project's OAuth app into a target Developer Test Account.
+
+**Example usage:**
+
+```yaml
+- uses: HubSpot/hubspot-project-actions/install-oauth-app@v1
+  with:
+    target_account_id: 12345678
+```
+
+### `Install HubSpot CLI`
+
+Installs the HubSpot CLI. Only installs if the cli has not already been installed by an earlier step.
+
+**Example usage:**
+
+```yaml
+- name: Install HubSpot CLI Action
+  uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1
+  with:
+    cli_version: "7.0.0"
+```

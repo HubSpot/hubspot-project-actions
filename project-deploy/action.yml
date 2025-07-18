@@ -36,7 +36,7 @@ runs:
         . "$GITHUB_ACTION_PATH/../scripts/action-utils.sh"
 
         # Setup CLI
-        setup_hubspot_cli
+        install_hubspot_cli
 
     - name: Deploy a HubSpot project build
       id: deploy-project
