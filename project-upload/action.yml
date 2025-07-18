@@ -26,17 +26,10 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Setup HubSpot CLI
-      shell: bash
-      env:
-        HUBSPOT_CLI_VERSION: ${{ inputs.cli_version || env.DEFAULT_CLI_VERSION }}
-      run: |
-        # Source shared utilities
-        . "$GITHUB_ACTION_PATH/../scripts/action-utils.sh"
-
-        # Setup CLI
-        setup_hubspot_cli
-
+    - name: Install HubSpot CLI
+      uses: ./install-hubspot-cli
+      with:
+        cli_version: ${{ inputs.cli_version }}
     - name: Upload source code to HubSpot Project
       shell: bash
       env:

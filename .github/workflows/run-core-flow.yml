@@ -3,7 +3,7 @@ on: [push, workflow_dispatch]
 env:
   DEFAULT_PERSONAL_ACCESS_KEY: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
   DEFAULT_ACCOUNT_ID: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
-  DEFAULT_CLI_VERSION: "7.7.16-experimental.4"
+  DEFAULT_CLI_VERSION: "7.7.16-experimental.5"
 
 jobs:
   deploy:
@@ -25,6 +25,13 @@ jobs:
       - name: HubSpot Project Upload Action
         uses: ./project-upload
         with:
+          project_dir: ./.github/workflows/example-project
+          personal_access_key: ${{ steps.test-account-create-step.outputs.personal_access_key }}
+          account_id: ${{ steps.test-account-create-step.outputs.account_id }}
+      - name: HubSpot Install OAuth App Action
+        uses: ./install-oauth-app
+        with:
+          test_account_id: ${{ steps.test-account-create-step.outputs.account_id }}
           project_dir: ./.github/workflows/example-project
           personal_access_key: ${{ steps.test-account-create-step.outputs.personal_access_key }}
           account_id: ${{ steps.test-account-create-step.outputs.account_id }}

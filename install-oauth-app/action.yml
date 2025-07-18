@@ -1,9 +1,10 @@
-name: "Project Deploy"
-description: "Deploy a project build"
+name: "Install OAuth App"
+description: "Install an OAuth app into a Developer Test Account"
 inputs:
-  build_id:
-    description: "Build ID to deploy"
+  test_account_id:
+    description: "The account ID of the test account to install your app into"
     required: true
+    type: string
   project_dir:
     description: "The path to the directory where your hsproject.json file is located"
     required: true
@@ -21,9 +22,9 @@ inputs:
     required: false
     type: string
 outputs:
-  deploy_id:
-    description: The deploy ID of the initiated HubSpot project deploy
-    value: ${{ steps.deploy-project.outputs.deploy_id }}
+  auth_code:
+    description: The auth code returned by the app install
+    value: ${{ steps.install-app.outputs.auth_code }}
 runs:
   using: "composite"
   steps:
@@ -31,8 +32,8 @@ runs:
       uses: ./install-hubspot-cli
       with:
         cli_version: ${{ inputs.cli_version }}
-    - name: Deploy a HubSpot project build
-      id: deploy-project
+    - name: Install an OAuth app into a Developer Test Account
+      id: install-app
       shell: bash
       env:
         HUBSPOT_PERSONAL_ACCESS_KEY: ${{ inputs.personal_access_key || env.DEFAULT_PERSONAL_ACCESS_KEY }}
@@ -47,18 +48,18 @@ runs:
         # Resolve and validate project directory
         resolve_project_dir "${{ inputs.project_dir }}"
 
-        # Validate build ID
-        if [ -z "${{ inputs.build_id }}" ]; then
-          echo "Error: build_id is required but was not set"
+        # Validate test account ID
+        if [ -z "${{ inputs.test_account_id }}" ]; then
+          echo "Error: test_account_id is required but was not set"
           exit 1
         fi
 
-        # Run deploy command
+        # Run app install command
         run_hs_command \
-          "hs project deploy --use-env --json --build ${{ inputs.build_id }}" \
+          "hs app install ${{ inputs.test_account_id }} --use-env --json" \
           "true"
 
         # Parse and set outputs
-        set_output_from_json "deploy_id" ".deployId"
+        set_output_from_json "auth_code" ".authCode"
 
-        echo "✅ Project deployment initiated successfully"
+        echo "✅ App installed successfully"
