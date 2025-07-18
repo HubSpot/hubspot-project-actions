@@ -28,6 +28,13 @@ jobs:
           project_dir: ./.github/workflows/example-project
           personal_access_key: ${{ steps.test-account-create-step.outputs.personal_access_key }}
           account_id: ${{ steps.test-account-create-step.outputs.account_id }}
+      - name: HubSpot Install OAuth App Action
+        uses: ./install-oauth-app
+        with:
+          test_account_id: ${{ steps.test-account-create-step.outputs.account_id }}
+          project_dir: ./.github/workflows/example-project
+          personal_access_key: ${{ steps.test-account-create-step.outputs.personal_access_key }}
+          account_id: ${{ steps.test-account-create-step.outputs.account_id }}
 
   cleanup:
     needs: deploy
