@@ -36,14 +36,14 @@ jobs:
           personal_access_key: ${{ steps.test-account-create-step.outputs.personal_access_key }}
           account_id: ${{ steps.test-account-create-step.outputs.account_id }}
 
-  # cleanup:
-  #   needs: deploy
-  #   if: always() && needs.deploy.outputs.test_account_id != ''
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2.3.3
-  #     - name: HubSpot Delete Test Account Action
-  #       uses: ./delete-test-account
-  #       with:
-  #         test_account_id: ${{ needs.deploy.outputs.test_account_id }}
+  cleanup:
+    needs: deploy
+    if: always() && needs.deploy.outputs.test_account_id != ''
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.3
+      - name: HubSpot Delete Test Account Action
+        uses: ./delete-test-account
+        with:
+          test_account_id: ${{ needs.deploy.outputs.test_account_id }}

@@ -57,9 +57,30 @@ jobs:
 
 This should enable automatic uploads to your target HubSpot account with every commit into `main` 🚀
 
+## `Test Hubspot Project` Action
+
+This action is a wrapper around several core actions to simplify your workflow setup. It facilitates our recommended automated validation & testing workflow.
+
+1. Validate your project to ensure it's properly configured
+2. Create a new Developer Test Account to test in isolation
+3. Upload your project into the test account and install your app
+
+This sets you up with an isolated environment to safely run your tests!
+
+See the [test-hubspot-project docs](./test-hubspot-project/README.md) for details on how to use this action in your workflow.
+
+**Example usage:**
+
+```yaml
+- uses: HubSpot/hubspot-project-actions/test-hubspot-project@v1
+  with:
+    account_config_path: "./test-account-config.json"
+    project_dir: "./my-project" # optional
+```
+
 ## Available Actions
 
-Compose these actions however you'd like! All actions support the `DEFAULT_ACCOUNT_ID` and `DEFAULT_PERSONAL_ACCESS_KEY` env variables, so you don't need to pass them into each action individually.
+While we recommend using our `test-hubspot-project` action, you are free to compose these actions however you'd like! All actions support the `DEFAULT_ACCOUNT_ID` and `DEFAULT_PERSONAL_ACCESS_KEY` env variables, so you don't need to pass them into each action individually.
 
 ### `Create Test Account`
 
