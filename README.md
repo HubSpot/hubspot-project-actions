@@ -137,6 +137,8 @@ See the [project-validate docs](./project-validate/README.md) for detailed specs
 
 Installs your project's OAuth app into a target Developer Test Account.
 
+See the [install-oauth-app docs](./install-oauth-app/README.md) for detailed specs.
+
 **Example usage:**
 
 ```yaml
@@ -148,6 +150,8 @@ Installs your project's OAuth app into a target Developer Test Account.
 ### `Install HubSpot CLI`
 
 Installs the HubSpot CLI. Only installs if the cli has not already been installed by an earlier step.
+
+See the [install-hubspot-cli docs](./install-hubspot-cli/README.md) for detailed specs.
 
 **Example usage:**
 
