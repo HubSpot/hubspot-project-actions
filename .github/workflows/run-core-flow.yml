@@ -3,7 +3,7 @@ on: [push, workflow_dispatch]
 env:
   DEFAULT_PERSONAL_ACCESS_KEY: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
   DEFAULT_ACCOUNT_ID: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
-  DEFAULT_CLI_VERSION: "7.7.16-experimental.5"
+  DEFAULT_CLI_VERSION: "7.7.16-experimental.6"
 
 jobs:
   deploy:
