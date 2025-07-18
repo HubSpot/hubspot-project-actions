@@ -7,7 +7,7 @@ Deletes a HubSpot test account. This action is typically used to clean up test a
 - `test_account_id` (required): Account ID of the test account to be deleted.
 - `personal_access_key` (optional): Personal Access Key of the test account to be deleted. If not provided, will use DEFAULT_PERSONAL_ACCESS_KEY from environment.
 - `account_id` (optional): HubSpot account ID associated with the personal access key. If not provided, will use DEFAULT_ACCOUNT_ID from environment.
-- `cli_version` (optional): Version of the HubSpot CLI to install. If not provided, will use DEFAULT_CLI_VERSION from environment.
+- `cli_version` (optional): Version of the HubSpot CLI to install. If not provided, will look for `DEFAULT_CLI_VERSION` in environment. If neither are found, defaults to `latest`.
 
 **Outputs:**
 No outputs.

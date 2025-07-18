@@ -1,18 +1,5 @@
 #!/bin/bash
 
-install_hubspot_cli() {
-  # Default to "latest" if HUBSPOT_CLI_VERSION is unset
-  HUBSPOT_CLI_VERSION="${HUBSPOT_CLI_VERSION:-latest}"
-
-  # Check if hs CLI is already installed with correct version
-  if ! command -v hs &> /dev/null || [[ "$HUBSPOT_CLI_VERSION" != "latest" && ! "$(hs --version)" =~ "$HUBSPOT_CLI_VERSION" ]]; then
-    echo "Installing HubSpot CLI version $HUBSPOT_CLI_VERSION"
-    npm install -g "@hubspot/cli@$HUBSPOT_CLI_VERSION"
-  else
-    echo "HubSpot CLI is already installed with correct version"
-  fi
-}
-
 validate_account_and_personal_access_key() {
   if [ -z "$HUBSPOT_ACCOUNT_ID" ]; then
     echo "Error: HUBSPOT_ACCOUNT_ID environment variable is required but was not set"

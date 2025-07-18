@@ -6,7 +6,7 @@ Installs the HubSpot CLI. Only installs if the cli has not already been installe
 
 **Inputs:**
 
-- `cli_version` (required): Version of the HubSpot CLI to install. Defaults to `latest`
+- `cli_version` (required): Version of the HubSpot CLI to install. If not provided, will look for `DEFAULT_CLI_VERSION` in environment. If neither are found, defaults to `latest`.
 
 **Outputs:**
 No outputs.

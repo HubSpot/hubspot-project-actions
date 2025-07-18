@@ -2,19 +2,22 @@ name: "Install HubSpot CLI"
 description: "Install the HubSpot CLI"
 inputs:
   cli_version:
-    description: "Version of the HubSpot CLI to install. If not provided, will default to latest."
-    required: true
+    description: "Version of the HubSpot CLI to install. If not provided, will look for DEFAULT_CLI_VERSION in environment. If neither are found, defaults to latest."
+    required: false
     type: string
 runs:
   using: "composite"
   steps:
     - name: Install HubSpot CLI
       shell: bash
-      env:
-        HUBSPOT_CLI_VERSION: ${{ inputs.cli_version }}
       run: |
-        # Source shared utilities
-        . "$GITHUB_ACTION_PATH/../scripts/action-utils.sh"
+        # Get CLI version from input or environment, defaulting to latest
+        CLI_VERSION="${{ inputs.cli_version || env.DEFAULT_CLI_VERSION || 'latest' }}"
 
-        # Install CLI
-        install_hubspot_cli
+        # Check if hs CLI is already installed with correct version
+        if ! command -v hs &> /dev/null || [[ "$CLI_VERSION" != "latest" && ! "$(hs --version)" =~ "$CLI_VERSION" ]]; then
+          echo "Installing HubSpot CLI version $CLI_VERSION"
+          npm install -g "@hubspot/cli@$CLI_VERSION"
+        else
+          echo "HubSpot CLI is already installed with correct version"
+        fi
