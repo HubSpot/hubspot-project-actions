@@ -42,17 +42,16 @@ jobs:
           account_config_path: "./test-account-config.json"
           project_dir: "./my-project" # optional
 
-
   # We recommend cleaning up the created test account after the tests run
-  # cleanup:
-  #   needs: deploy
-  #   if: always() && needs.deploy.outputs.test_account_id != ''
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2.3.3
-  #     - name: HubSpot Delete Test Account Action
-  #       uses: HubSpot/hubspot-project-actions/delete-test-account@v1
-  #       with:
-  #         test_account_id: ${{ needs.deploy.outputs.test_account_id }}
+  cleanup:
+    needs: deploy
+    if: always() && needs.deploy.outputs.test_account_id != ''
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.3
+      - name: HubSpot Delete Test Account Action
+        uses: HubSpot/hubspot-project-actions/delete-test-account@v1
+        with:
+          test_account_id: ${{ needs.deploy.outputs.test_account_id }}
 ```
