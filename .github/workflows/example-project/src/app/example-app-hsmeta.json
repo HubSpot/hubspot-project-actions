@@ -8,7 +8,7 @@
     "auth": {
       "type": "oauth",
       "redirectUrls": ["http://localhost:3000"],
-      "requiredScopes": [],
+      "requiredScopes": ["crm.objects.contacts.read"],
       "optionalScopes": [],
       "conditionallyRequiredScopes": []
     },
