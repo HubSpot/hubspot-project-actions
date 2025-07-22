@@ -56,7 +56,7 @@ runs:
 
         # Run app install command
         run_hs_command \
-          "hs app install ${{ inputs.test_account_id }} --use-env --json" \
+          "hs app install ${{ inputs.test_account_id }} --use-env --json --network-debug" \
           "true"
 
         # Parse and set outputs

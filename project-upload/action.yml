@@ -47,7 +47,7 @@ runs:
 
         # Run upload command
         run_hs_command \
-          "hs project upload --force-create --use-env --json --message '${{ github.event.head_commit.message || 'Uploaded via HubSpot GitHub Action' }} (${GITHUB_SHA:0:7})'" \
+          "hs project upload --force-create --network-debug --use-env --json --message '${{ github.event.head_commit.message || 'Uploaded via HubSpot GitHub Action' }} (${GITHUB_SHA:0:7})'" \
           "true"
 
         # Parse and set outputs
