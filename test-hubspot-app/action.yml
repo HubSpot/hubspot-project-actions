@@ -1,5 +1,5 @@
-name: "Test HubSpot Project"
-description: "Test a HubSpot project using our recommended workflow. This action will validate your project, create a test account, upload your project, and then install the OAuth app."
+name: "Test HubSpot App"
+description: "Test a HubSpot app using our recommended workflow. This action will validate your project, create a test account, upload your project, and then install the OAuth app."
 inputs:
   account_config_path:
     description: "The path to the account config file to use for the test account"

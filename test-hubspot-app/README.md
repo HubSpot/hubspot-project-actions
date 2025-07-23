@@ -1,6 +1,6 @@
-# `Test Hubspot Project` Action
+# `Test Hubspot App` Action
 
-Test a HubSpot project using our recommended workflow. This action will validate your project, create a test account, upload your project, and then install the OAuth app.
+Test a HubSpot app using our recommended workflow. This action will validate your project, create a test account, upload your project, and then install the OAuth app.
 
 **Inputs:**
 
@@ -17,7 +17,7 @@ Test a HubSpot project using our recommended workflow. This action will validate
 
 **Example usage:**
 
-On every code push, initiate a full testing workflow. Add any of your own testing steps to the deploy job after the `test-hubspot-project` action finishes setting up your environment. Then, cleanup your test account.
+On every code push, initiate a full testing workflow. Add any of your own testing steps to the deploy job after the `test-hubspot-app` action finishes setting up your environment. Then, cleanup your test account.
 
 ```yaml
 on: [push]
@@ -31,13 +31,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     outputs:
-      test_account_id: ${{ steps.test-hubspot-project-step.outputs.test_account_id }}
+      test_account_id: ${{ steps.test-hubspot-app-step.outputs.test_account_id }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
-      - name: Test HubSpot Project
-        id: test-hubspot-project-step
-        uses: HubSpot/hubspot-project-actions/test-hubspot-project@v1
+      - name: Test HubSpot App
+        id: test-hubspot-app-step
+        uses: HubSpot/hubspot-project-actions/test-hubspot-app@v1
         with:
           account_config_path: "./test-account-config.json"
           project_dir: "./my-project" # optional
