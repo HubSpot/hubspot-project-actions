@@ -15,8 +15,8 @@ jobs:
       - name: HubSpot Project Validation Action
         uses: ./project-validate
         with:
-          project_dir: ./.github/workflows/example-project
+          project_dir: ./.github/workflows/test-project
       - name: HubSpot Project Upload Action
         uses: ./project-upload
         with:
-          project_dir: ./.github/workflows/example-project
+          project_dir: ./.github/workflows/test-project
