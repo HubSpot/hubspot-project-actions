@@ -48,7 +48,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.3.3
       - name: HubSpot Project Upload Action
-        uses: HubSpot/hubspot-project-actions/project-upload@v1.0
+        uses: HubSpot/hubspot-project-actions/project-upload@v1.0.0
 ```
 
 3. Commit and merge your changes
@@ -56,6 +56,26 @@ jobs:
 **Important!** Do not change the `account_id` or `personal_access_key` values in your workflow. Auth related values should only be stored as GitHub secrets.
 
 This should enable automatic uploads to your target HubSpot account with every commit into `main` 🚀
+
+## Versioning
+
+This repository uses semantic versioning with Git tags.
+
+- **MAJOR** version for incompatible API changes
+- **MINOR** version for backwards-compatible functionality additions
+- **PATCH** version for backwards-compatible bug fixes
+
+Actions can be referenced using the following format:
+
+```
+HubSpot/hubspot-project-actions/[action-name]@v[version]
+```
+
+For example:
+
+- `HubSpot/hubspot-project-actions/project-upload@v1.0.0`
+- `HubSpot/hubspot-project-actions/project-deploy@v1.2.3`
+- `HubSpot/hubspot-project-actions/project-validate@v2.0.0`
 
 ## Available Actions
 
@@ -70,7 +90,7 @@ See the [project-upload docs](./project-upload/README.md) for detailed specs.
 **Example usage:**
 
 ```yaml
-- uses: HubSpot/hubspot-project-actions/project-upload@v1
+- uses: HubSpot/hubspot-project-actions/project-upload@v1.0.0
   with:
     project_dir: "./my-project" # optional
 ```
@@ -84,7 +104,7 @@ See the [project-deploy docs](./project-deploy/README.md) for detailed specs.
 **Example usage:**
 
 ```yaml
-- uses: HubSpot/hubspot-project-actions/project-deploy@v1
+- uses: HubSpot/hubspot-project-actions/project-deploy@v1.0.0
   with:
     build_id: ${{ steps.upload-action-step.outputs.build_id }}
     project_dir: "./my-project" # optional
@@ -99,7 +119,7 @@ See the [project-validate docs](./project-validate/README.md) for detailed specs
 **Example usage:**
 
 ```yaml
-- uses: HubSpot/hubspot-project-actions/project-validate@v1
+- uses: HubSpot/hubspot-project-actions/project-validate@v1.0.0
   with:
     project_dir: "./my-project" # optional
 ```
@@ -113,7 +133,7 @@ See the [install-hubspot-cli docs](./install-hubspot-cli/README.md) for detailed
 **Example usage:**
 
 ```yaml
-- uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1
+- uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1.0.0
   with:
     cli_version: "7.0.0"
 ```
