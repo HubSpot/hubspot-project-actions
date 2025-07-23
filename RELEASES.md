@@ -2,6 +2,8 @@
 
 This project uses semantic versioning with Git tags. Here's how to create a new release:
 
+**IMPORTANT** Remember to update the references to the install cli action within the other actions
+
 #### 1. Prepare for Release
 
 Before creating a release, ensure:
