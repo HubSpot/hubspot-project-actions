@@ -20,6 +20,10 @@ inputs:
     description: "Version of the HubSpot CLI to install. If not provided, will use DEFAULT_CLI_VERSION from environment. If neither are found, defaults to `latest`."
     required: false
     type: string
+  profile:
+    description: "Profile to use for the HubSpot CLI. If not provided, will use DEFAULT_PROFILE from environment."
+    required: false
+    type: string
 outputs:
   deploy_id:
     description: The deploy ID of the initiated HubSpot project deploy
@@ -37,6 +41,7 @@ runs:
       env:
         HUBSPOT_PERSONAL_ACCESS_KEY: ${{ inputs.personal_access_key || env.DEFAULT_PERSONAL_ACCESS_KEY }}
         HUBSPOT_ACCOUNT_ID: ${{ inputs.account_id || env.DEFAULT_ACCOUNT_ID }}
+        HUBSPOT_PROFILE: ${{ inputs.profile || env.DEFAULT_PROFILE }}
       run: |
         # Source shared utilities
         . "$GITHUB_ACTION_PATH/../scripts/action-utils.sh"
@@ -53,9 +58,15 @@ runs:
           exit 1
         fi
 
+        # Handle profile usage
+        PROFILE_ARG=""
+        if [ -n "$HUBSPOT_PROFILE" ]; then
+          PROFILE_ARG="--profile $HUBSPOT_PROFILE"
+        fi
+
         # Run deploy command
         run_hs_command \
-          "hs project deploy --use-env --json --build ${{ inputs.build_id }}" \
+          "hs project deploy --use-env --json --build ${{ inputs.build_id }} $PROFILE_ARG" \
           "true"
 
         # Parse and set outputs

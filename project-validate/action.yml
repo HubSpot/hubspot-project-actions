@@ -18,6 +18,10 @@ inputs:
     description: "Version of the HubSpot CLI to install. If not provided, will use DEFAULT_CLI_VERSION from environment. If neither are found, defaults to `latest`."
     required: false
     type: string
+  profile:
+    description: "Profile to use for the HubSpot CLI. If not provided, will use DEFAULT_PROFILE from environment."
+    required: false
+    type: string
 runs:
   using: "composite"
   steps:
@@ -30,6 +34,7 @@ runs:
       env:
         HUBSPOT_PERSONAL_ACCESS_KEY: ${{ inputs.personal_access_key || env.DEFAULT_PERSONAL_ACCESS_KEY }}
         HUBSPOT_ACCOUNT_ID: ${{ inputs.account_id || env.DEFAULT_ACCOUNT_ID }}
+        HUBSPOT_PROFILE: ${{ inputs.profile || env.DEFAULT_PROFILE }}
       run: |
         # Source shared utilities
         . "$GITHUB_ACTION_PATH/../scripts/action-utils.sh"
@@ -40,7 +45,13 @@ runs:
         # Resolve and validate project directory
         resolve_project_dir "${{ inputs.project_dir }}"
 
+        # Handle profile usage
+        PROFILE_ARG=""
+        if [ -n "$HUBSPOT_PROFILE" ]; then
+          PROFILE_ARG="--profile $HUBSPOT_PROFILE"
+        fi
+
         # Run validation - command will exit with non-zero if validation fails
-        hs project validate --use-env
+        run_hs_command "hs project validate --use-env $PROFILE_ARG"
 
         echo "✅ Project validation completed successfully"

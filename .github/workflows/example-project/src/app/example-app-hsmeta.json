@@ -7,7 +7,7 @@
     "distribution": "private",
     "auth": {
       "type": "oauth",
-      "redirectUrls": ["http://localhost:3000"],
+      "redirectUrls": ["${DOMAIN}"],
       "requiredScopes": ["crm.objects.contacts.read"],
       "optionalScopes": [],
       "conditionallyRequiredScopes": []
