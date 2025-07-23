@@ -32,7 +32,7 @@ runs:
   using: "composite"
   steps:
     - name: Install HubSpot CLI
-      uses: ./install-hubspot-cli
+      uses: HubSpot/hubspot-project-actions/install-hubspot-cli@0.0.1
       with:
         cli_version: ${{ inputs.cli_version }}
     - name: Deploy a HubSpot project build
