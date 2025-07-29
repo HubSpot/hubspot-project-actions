@@ -3,7 +3,11 @@ description: "Deploy a project build"
 inputs:
   build_id:
     description: "Build ID to deploy"
-    required: true
+    required: false
+  deploy_latest_build:
+    description: "Deploy the most recent build"
+    required: false
+    default: false
   project_dir:
     description: "The path to the directory where your hsproject.json file is located"
     required: true
@@ -52,9 +56,12 @@ runs:
         # Resolve and validate project directory
         resolve_project_dir "${{ inputs.project_dir }}"
 
-        # Validate build ID
-        if [ -z "${{ inputs.build_id }}" ]; then
-          echo "Error: build_id is required but was not set"
+        # Validate build ID and deploy latest build
+        if [ -z "${{ inputs.build_id }}" ] && [ "${{ inputs.deploy_latest_build }}" = "false" ]; then
+          echo "Error: build_id or deploy_latest_build is required but neither was set"
+          exit 1
+        elif [ -n "${{ inputs.build_id }}" ] && [ "${{ inputs.deploy_latest_build }}" = "true" ]; then
+          echo "Error: build_id and deploy_latest_build cannot be used together"
           exit 1
         fi
 
@@ -64,9 +71,16 @@ runs:
           PROFILE_ARG="--profile $HUBSPOT_PROFILE"
         fi
 
+        # Handle deploy latest build usage
+        if [ "${{ inputs.deploy_latest_build }}" = "true" ]; then
+          BUILD_ARG="--deploy-latest-build"
+        else
+          BUILD_ARG="--build ${{ inputs.build_id }}"
+        fi
+
         # Run deploy command
         run_hs_command \
-          "hs project deploy --use-env --json --build ${{ inputs.build_id }} $PROFILE_ARG" \
+          "hs project deploy --use-env --json $BUILD_ARG $PROFILE_ARG" \
           "true"
 
         # Parse and set outputs
