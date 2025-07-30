@@ -1,12 +1,6 @@
 # Official HubSpot Project Actions
 
-:warning: This is pre-release software. It is unstable and subject to breaking changes.
-
-For now, we recommend using the more stable [current project upload action](https://github.com/HubSpot/hubspot-project-upload-action)
-
----
-
-Use these composable actions to upload, deploy, and test your HubSpot Developer Projects. These actions are modular so you can arrange them into a workflow that best suits your needs.
+Use these composable actions to upload, deploy, and validate your HubSpot Developer Projects. These actions are modular so you can arrange them into a workflow that best suits your needs.
 
 Don't know where to start? Follow the usage guide below to set up a basic flow to upload your project into your HubSpot account.
 
@@ -25,6 +19,8 @@ env:
   DEFAULT_PERSONAL_ACCESS_KEY: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
   DEFAULT_CLI_VERSION: "latest" # Optional: specify a CLI version (it will default to latest if unset)
 ```
+
+**TIP:** The `DEFAULT_CLI_VERSION` will default to latest, but we recommend targeting a specific cli version to prevent new releases from impacting your CI/CD flow.
 
 Now, set up a new workflow file that automatically uploads new changes on your `main` branch to your HubSpot account.
 
@@ -79,7 +75,7 @@ For example:
 
 ## Available Actions
 
-All actions support the `DEFAULT_ACCOUNT_ID` and `DEFAULT_PERSONAL_ACCESS_KEY` env variables, so you don't need to pass them into each action individually.
+All actions support the `DEFAULT_ACCOUNT_ID` and `DEFAULT_PERSONAL_ACCESS_KEY`, and `DEFAULT_CLI_VERSION` env variables. There's no need to pass them into each action individually as inputs.
 
 ### `Project Upload`
 
