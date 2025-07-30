@@ -31,7 +31,7 @@ runs:
   using: "composite"
   steps:
     - name: Install HubSpot CLI
-      uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v0.0.1
+      uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v0.1.0
       with:
         cli_version: ${{ inputs.cli_version }}
     - name: Upload source code to HubSpot Project
