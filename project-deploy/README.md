@@ -4,7 +4,8 @@ Deploys a specific build of a HubSpot project.
 
 **Inputs:**
 
-- `build_id` (required): Build ID to deploy
+- `build_id` (optional): Build ID to deploy [conflicts with deploy_latest_build]
+- `deploy_latest_build`: (optional): Deploy the most recent build [conflicts with build_id]
 - `project_dir` (optional): The path to the directory where your hsproject.json file is located. Defaults to "./"
 - `personal_access_key` (optional): Personal Access Key generated in HubSpot that grants access to the CLI. If not provided, will use DEFAULT_PERSONAL_ACCESS_KEY from environment.
 - `account_id` (optional): HubSpot account ID associated with the personal access key. If not provided, will use DEFAULT_ACCOUNT_ID from environment.
