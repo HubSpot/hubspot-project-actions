@@ -29,13 +29,6 @@ outputs:
     description: "The deploy ID if auto-deploy is enabled"
 runs:
   using: "composite"
-  outputs:
-    build_id: ${{ steps.upload-project-step.outputs.build_id }}
-    deploy_id: ${{ steps.upload-project-step.outputs.deploy_id }}
-  env:
-    HUBSPOT_PERSONAL_ACCESS_KEY: ${{ inputs.personal_access_key || env.DEFAULT_PERSONAL_ACCESS_KEY }}
-    HUBSPOT_ACCOUNT_ID: ${{ inputs.account_id || env.DEFAULT_ACCOUNT_ID }}
-    HUBSPOT_PROFILE: ${{ inputs.profile || env.DEFAULT_PROFILE }}
   steps:
     - name: Install HubSpot CLI
       uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v0.1.0
@@ -45,9 +38,17 @@ runs:
       uses: HubSpot/hubspot-project-actions/project-validate@v0.1.0
       with:
         project_dir: ${{ inputs.project_dir }}
+        personal_access_key: ${{ inputs.personal_access_key }}
+        account_id: ${{ inputs.account_id }}
+        cli_version: ${{ inputs.cli_version }}
+        profile: ${{ inputs.profile }}
     - name: Upload HubSpot Project
       id: upload-project-step
       uses: HubSpot/hubspot-project-actions/project-upload@v0.1.0
       with:
         project_dir: ${{ inputs.project_dir }}
+        personal_access_key: ${{ inputs.personal_access_key }}
+        account_id: ${{ inputs.account_id }}
+        cli_version: ${{ inputs.cli_version }}
+        profile: ${{ inputs.profile }}
 
