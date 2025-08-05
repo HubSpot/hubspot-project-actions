@@ -17,6 +17,13 @@ jobs:
         with:
           project_dir: ./.github/workflows/test-project
       - name: HubSpot Project Upload Action
+        id: upload-project-step
         uses: ./project-upload
         with:
           project_dir: ./.github/workflows/test-project
+      - name: HubSpot Project Deploy Action
+        if: ${{ steps.upload-project-step.outputs.build_id != '' }}
+        uses: ./project-deploy
+        with:
+          project_dir: ./.github/workflows/test-project
+          deploy_latest_build: true
