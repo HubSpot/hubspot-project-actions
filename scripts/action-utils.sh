@@ -23,7 +23,7 @@ validate_account_and_personal_access_key() {
 #   Exits with error if directory or hsproject.json not found
 resolve_project_dir() {
   local input_path="$1"
-  
+
   # Convert to absolute path if relative
   if [[ "$input_path" != /* ]]; then
     PROJECT_DIR="$GITHUB_WORKSPACE/$input_path"
@@ -82,7 +82,7 @@ run_hs_command() {
   fi
 
   return 0
-} 
+}
 
 # Sets a GitHub Actions output from JSON, using the global PARSED_OUTPUT variable
 # Automatically exits with code 1 if a required output is missing
@@ -116,6 +116,6 @@ set_output_from_json() {
 
   # Set the output
   echo "$output_name=$value" >> $GITHUB_OUTPUT
-  
+
   return 0
 }
