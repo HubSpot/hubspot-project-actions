@@ -25,8 +25,10 @@ inputs:
 outputs:
   build_id:
     description: "The build ID of the created HubSpot project build"
+    value: ${{ steps.upload-project-step.outputs.build_id }}
   deploy_id:
     description: "The deploy ID if auto-deploy is enabled"
+    value: ${{ steps.upload-project-step.outputs.deploy_id }}
 runs:
   using: "composite"
   steps:
