@@ -1,4 +1,4 @@
-name: "Default Project Action"
+name: "HubSpot Project Action"
 author: "HubSpot"
 description: "Validate, upload, and deploy a HubSpot project"
 branding:
