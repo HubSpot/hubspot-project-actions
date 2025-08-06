@@ -28,6 +28,8 @@ Use semantic versioning to determine the appropriate version number:
 
 Create and push the tag:
 
+Before you create the tag - make sure to update any version references in the actions!
+
 ```bash
 # Create an annotated tag
 git tag -a v1.0.0 -m "Release v1.0.0"
