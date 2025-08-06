@@ -1,5 +1,9 @@
 name: "Default Project Action"
+author: "HubSpot"
 description: "Validate, upload, and deploy a HubSpot project"
+branding:
+  icon: "upload-cloud"
+  color: "orange"
 inputs:
   project_dir:
     description: "The path to the directory where your hsproject.json file is located"
