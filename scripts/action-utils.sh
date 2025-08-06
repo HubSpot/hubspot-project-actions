@@ -2,12 +2,12 @@
 
 validate_account_and_personal_access_key() {
   if [ -z "$HUBSPOT_ACCOUNT_ID" ]; then
-    echo "Error: HUBSPOT_ACCOUNT_ID environment variable is required but was not set"
+    echo "Error: HUBSPOT_ACCOUNT_ID environment variable or account_id input is required but was not set"
     exit 1
   fi
 
   if [ -z "$HUBSPOT_PERSONAL_ACCESS_KEY" ]; then
-    echo "Error: HUBSPOT_PERSONAL_ACCESS_KEY environment variable is required but was not set"
+    echo "Error: HUBSPOT_PERSONAL_ACCESS_KEY environment variable or personal_access_key input is required but was not set"
     exit 1
   fi
 
