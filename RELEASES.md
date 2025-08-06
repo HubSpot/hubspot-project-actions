@@ -28,14 +28,27 @@ Use semantic versioning to determine the appropriate version number:
 
 Create and push the tag:
 
-Before you create the tag - make sure to update any version references in the actions!
+Before you create the tag...
+- Check out a new branch for the release
+- Make sure to update any version references in the actions
+- Commit your local changes
 
+Use our scripts to handle versioning
 ```bash
-# Create an annotated tag
-git tag -a v1.0.0 -m "Release v1.0.0"
+# Show available commands
+npm run version help
 
-# Push the tag to the remote repository
-git push origin v1.0.0
+# List all the current versions (tags)
+npm run version list
+
+# Display the current version
+npm run version current
+
+# Show info for the current version
+npm run version info
+
+# Create a new version
+npm run version create <version> [message]
 ```
 
 ### Rollback a Release
