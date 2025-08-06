@@ -1,0 +1,19 @@
+{
+  "name": "hubspot-project-actions",
+  "version": "1.0.0",
+  "description": "HubSpot Project Actions",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HubSpot/hubspot-project-actions.git"
+  },
+  "author": "HubSpot",
+  "scripts": {
+    "version": "bash scripts/version.sh"
+  },
+  "keywords": [
+    "actions",
+    "deployment",
+    "hubspot",
+    "project"
+  ]
+}
