@@ -34,14 +34,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v4
       - name: HubSpot Project Upload
         id: upload-step
-        uses: HubSpot/hubspot-project-actions/project-upload@v1
+        uses: HubSpot/hubspot-project-actions/project-upload@v1.0.0
         with:
           project_dir: "./my-project" # optional
       - name: HubSpot Project Deploy
-        uses: HubSpot/hubspot-project-actions/project-deploy@v1
+        uses: HubSpot/hubspot-project-actions/project-deploy@v1.0.0
         with:
           build_id: ${{ steps.upload-step.outputs.build_id }}
           project_dir: "./my-project" # optional
