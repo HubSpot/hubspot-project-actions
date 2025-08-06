@@ -49,7 +49,7 @@ jobs:
 
 **Important!** Do not change the `account_id` or `personal_access_key` values in your workflow. Auth related values should only be stored as GitHub secrets.
 
-This should enable automatic uploads to your target HubSpot account with every commit into `main` 🚀
+This should enable automatic uploads to your target HubSpot account with every commit into `main` 🎉
 
 ## Versioning
 
