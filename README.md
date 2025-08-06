@@ -1,8 +1,6 @@
 # Official HubSpot Project Actions
 
-Use these composable workflow actions to upload, deploy, and validate your HubSpot Developer Projects automatically. These actions are modular, which enables you to arrange them into a workflow that best suits your needs.
-
-Don't know where to start? Follow the usage guide below to set up a basic flow to upload your project into your HubSpot account.
+Composable workflow actions to upload, deploy, and validate your HubSpot Developer Projects 🚀
 
 ## Basic usage - Uploading your project using our default action
 
