@@ -1,0 +1,18 @@
+on: [push, workflow_dispatch]
+
+env:
+  DEFAULT_PERSONAL_ACCESS_KEY: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
+  DEFAULT_ACCOUNT_ID: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
+  DEFAULT_PROFILE: "prod"
+  DEFAULT_CLI_VERSION: "7.6.0-beta.3"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: HubSpot Default Action
+        uses: ./
+        with:
+          project_dir: ./.github/workflows/test-project

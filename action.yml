@@ -1,0 +1,56 @@
+name: "Default Project Action"
+description: "Validate, upload, and deploy a HubSpot project"
+inputs:
+  project_dir:
+    description: "The path to the directory where your hsproject.json file is located"
+    required: true
+    default: ./
+    type: string
+  personal_access_key:
+    description: "[SECRET] Personal Access Key generated in HubSpot that grants access to the CLI. If not provided, will use DEFAULT_PERSONAL_ACCESS_KEY from environment."
+    required: false
+    type: string
+  account_id:
+    description: "HubSpot account ID associated with the personal-access-key. If not provided, will use DEFAULT_ACCOUNT_ID from environment."
+    required: false
+    type: number
+  cli_version:
+    description: "Version of the HubSpot CLI to install. If not provided, will use DEFAULT_CLI_VERSION from environment. If neither are found, defaults to `latest`."
+    required: false
+    type: string
+  profile:
+    description: "Profile to use for the HubSpot CLI. If not provided, will use DEFAULT_PROFILE from environment."
+    required: false
+    type: string
+outputs:
+  build_id:
+    description: "The build ID of the created HubSpot project build"
+    value: ${{ steps.upload-project-step.outputs.build_id }}
+  deploy_id:
+    description: "The deploy ID if auto-deploy is enabled"
+    value: ${{ steps.upload-project-step.outputs.deploy_id }}
+runs:
+  using: "composite"
+  steps:
+    - name: Install HubSpot CLI
+      uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v0.1.0
+      with:
+        cli_version: ${{ inputs.cli_version }}
+    - name: Validate HubSpot Project
+      uses: HubSpot/hubspot-project-actions/project-validate@v0.1.0
+      with:
+        project_dir: ${{ inputs.project_dir }}
+        personal_access_key: ${{ inputs.personal_access_key }}
+        account_id: ${{ inputs.account_id }}
+        cli_version: ${{ inputs.cli_version }}
+        profile: ${{ inputs.profile }}
+    - name: Upload HubSpot Project
+      id: upload-project-step
+      uses: HubSpot/hubspot-project-actions/project-upload@v0.1.0
+      with:
+        project_dir: ${{ inputs.project_dir }}
+        personal_access_key: ${{ inputs.personal_access_key }}
+        account_id: ${{ inputs.account_id }}
+        cli_version: ${{ inputs.cli_version }}
+        profile: ${{ inputs.profile }}
+

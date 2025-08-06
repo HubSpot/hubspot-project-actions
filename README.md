@@ -4,7 +4,7 @@ Use these composable workflow actions to upload, deploy, and validate your HubSp
 
 Don't know where to start? Follow the usage guide below to set up a basic flow to upload your project into your HubSpot account.
 
-## Basic usage - Uploading your project
+## Basic usage - Uploading your project using our default action
 
 In your GitHub repo, create two new [secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository) for:
 
@@ -43,8 +43,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
-      - name: HubSpot Project Upload Action
-        uses: HubSpot/hubspot-project-actions/project-upload@v1.0.0
+      - name: HubSpot Project Default Action
+        uses: HubSpot/hubspot-project-actions@v1.0.0
 ```
 
 3. Commit and merge your changes
@@ -69,6 +69,7 @@ HubSpot/hubspot-project-actions/[action-name]@v[version]
 
 For example:
 
+- `HubSpot/hubspot-project-actions@v1.0.0`
 - `HubSpot/hubspot-project-actions/project-upload@v1.0.0`
 - `HubSpot/hubspot-project-actions/project-deploy@v1.2.3`
 - `HubSpot/hubspot-project-actions/project-validate@v2.0.0`
