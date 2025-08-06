@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v4
       - name: HubSpot Project Default Action
         uses: HubSpot/hubspot-project-actions@v1.0.0
 ```

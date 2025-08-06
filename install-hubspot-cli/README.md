@@ -29,9 +29,9 @@ jobs:
       test_account_id: ${{ steps.test-account-create-step.outputs.account_id }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v4
       - name: Install HubSpot CLI Action
-        uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1
+        uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1.0.0
         with:
           cli_version: "7.0.0"
 ```
