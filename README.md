@@ -41,7 +41,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: HubSpot Project Default Action
+      - name: HubSpot Project Action
         uses: HubSpot/hubspot-project-actions@v1.0.0
 ```
 
