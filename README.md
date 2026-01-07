@@ -130,5 +130,5 @@ See the [install-hubspot-cli docs](./install-hubspot-cli/README.md) for detailed
 ```yaml
 - uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1.0.0
   with:
-    cli_version: "7.0.0"
+    cli_version: "7.9.0"
 ```
