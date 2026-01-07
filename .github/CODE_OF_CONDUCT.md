@@ -1,4 +1,4 @@
-# HubSpot Local Dev Lib Code of Conduct
+# HubSpot Project Actions Code of Conduct
 
 ## Our Pledge to you, our community of developers
 
