@@ -12,7 +12,7 @@ runs:
       shell: bash
       run: |
         # Get CLI version from input or environment, defaulting to latest
-        CLI_VERSION="${{ inputs.cli_version || env.DEFAULT_CLI_VERSION || 'latest' }}"
+        CLI_VERSION="${{ inputs.cli_version || env.DEFAULT_CLI_VERSION || '7.9.0' }}"
 
         # Check if hs CLI is already installed with correct version
         if ! command -v hs &> /dev/null || [[ "$CLI_VERSION" != "latest" && ! "$(hs --version)" =~ "$CLI_VERSION" ]]; then
