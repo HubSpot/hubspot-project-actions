@@ -42,7 +42,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: HubSpot Project Action
-        uses: HubSpot/hubspot-project-actions@v1.0.0
+        uses: HubSpot/hubspot-project-actions@v1.0.1
 ```
 
 3. Commit and merge your changes
@@ -67,8 +67,8 @@ HubSpot/hubspot-project-actions/[action-name]@v[version]
 
 For example:
 
-- `HubSpot/hubspot-project-actions@v1.0.0`
-- `HubSpot/hubspot-project-actions/project-upload@v1.0.0`
+- `HubSpot/hubspot-project-actions@v1.0.1`
+- `HubSpot/hubspot-project-actions/project-upload@v1.0.1`
 - `HubSpot/hubspot-project-actions/project-deploy@v1.2.3`
 - `HubSpot/hubspot-project-actions/project-validate@v2.0.0`
 
@@ -85,7 +85,7 @@ See the [project-upload docs](./project-upload/README.md) for detailed specs.
 **Example usage:**
 
 ```yaml
-- uses: HubSpot/hubspot-project-actions/project-upload@v1.0.0
+- uses: HubSpot/hubspot-project-actions/project-upload@v1.0.1
   with:
     project_dir: "./my-project" # optional
 ```
@@ -99,7 +99,7 @@ See the [project-deploy docs](./project-deploy/README.md) for detailed specs.
 **Example usage:**
 
 ```yaml
-- uses: HubSpot/hubspot-project-actions/project-deploy@v1.0.0
+- uses: HubSpot/hubspot-project-actions/project-deploy@v1.0.1
   with:
     build_id: ${{ steps.upload-action-step.outputs.build_id }}
     project_dir: "./my-project" # optional
@@ -114,7 +114,7 @@ See the [project-validate docs](./project-validate/README.md) for detailed specs
 **Example usage:**
 
 ```yaml
-- uses: HubSpot/hubspot-project-actions/project-validate@v1.0.0
+- uses: HubSpot/hubspot-project-actions/project-validate@v1.0.1
   with:
     project_dir: "./my-project" # optional
 ```
@@ -128,7 +128,7 @@ See the [install-hubspot-cli docs](./install-hubspot-cli/README.md) for detailed
 **Example usage:**
 
 ```yaml
-- uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1.0.0
+- uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1.0.1
   with:
     cli_version: "7.9.0"
 ```

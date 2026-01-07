@@ -32,7 +32,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: HubSpot Project Validation
-        uses: HubSpot/hubspot-project-actions/project-validate@v1.0.0
+        uses: HubSpot/hubspot-project-actions/project-validate@v1.0.1
         with:
           project_dir: "./my-project" # optional
 ```
