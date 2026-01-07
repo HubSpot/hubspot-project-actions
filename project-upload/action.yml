@@ -15,7 +15,7 @@ inputs:
     required: false
     type: number
   cli_version:
-    description: "Version of the HubSpot CLI to install. If not provided, will use DEFAULT_CLI_VERSION from environment. If neither are found, defaults to `latest`."
+    description: "Version of the HubSpot CLI to install. If not provided, will use DEFAULT_CLI_VERSION from environment. If neither are found, defaults to a pre-determined stable version of the CLI"
     required: false
     type: string
   profile:

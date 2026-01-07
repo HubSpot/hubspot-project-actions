@@ -2,11 +2,11 @@
 
 Installs the HubSpot CLI. Only installs if the cli has not already been installed by an earlier step.
 
-**Note:** All of the HubSpot actions leverage this action. In most cases you shouldn't need to use this directly.
+**Note:** All the HubSpot actions leverage this action. In most cases you shouldn't need to use this directly.
 
 **Inputs:**
 
-- `cli_version` (required): Version of the HubSpot CLI to install. If not provided, will look for `DEFAULT_CLI_VERSION` in environment. If neither are found, defaults to `latest`.
+- `cli_version` (required): Version of the HubSpot CLI to install. If not provided, will look for `DEFAULT_CLI_VERSION` in environment. If neither are found, defaults to a pre-determined stable version of the CLI.
 
 **Outputs:**
 No outputs.
@@ -33,5 +33,5 @@ jobs:
       - name: Install HubSpot CLI Action
         uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1.0.0
         with:
-          cli_version: "7.0.0"
+          cli_version: "7.9.0"
 ```
