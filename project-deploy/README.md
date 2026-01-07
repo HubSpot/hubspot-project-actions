@@ -37,11 +37,11 @@ jobs:
         uses: actions/checkout@v4
       - name: HubSpot Project Upload
         id: upload-step
-        uses: HubSpot/hubspot-project-actions/project-upload@v1.0.0
+        uses: HubSpot/hubspot-project-actions/project-upload@v1.0.1
         with:
           project_dir: "./my-project" # optional
       - name: HubSpot Project Deploy
-        uses: HubSpot/hubspot-project-actions/project-deploy@v1.0.0
+        uses: HubSpot/hubspot-project-actions/project-deploy@v1.0.1
         with:
           build_id: ${{ steps.upload-step.outputs.build_id }}
           project_dir: "./my-project" # optional
