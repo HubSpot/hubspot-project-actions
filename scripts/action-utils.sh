@@ -52,21 +52,20 @@ resolve_project_dir() {
 # Arguments:
 #   $1 - The HubSpot CLI command to run
 #   $2 - Whether to expect and parse JSON output (true/false)
-# Outputs:
-#   Sets COMMAND_OUTPUT variable with the raw output
-#   Sets PARSED_OUTPUT variable with the parsed JSON (if JSON parsing is enabled and successful)
-#   Returns the command's exit code
 run_hs_command() {
   local command="$1"
   local expect_json="${2:-false}"
 
-  # Add debug flag if HUBSPOT_DEBUG is set
-  if [ -n "$HUBSPOT_DEBUG" ] && [ "$HUBSPOT_DEBUG" = "true" ]; then
-    command="$command --network-debug"
+  # Ensure pipelines propagate exit status
+  set -o pipefail
+
+  # Mask secrets in logs (GitHub Actions masks)
+  if [ -n "$HUBSPOT_PERSONAL_ACCESS_KEY" ]; then
+    echo "::add-mask::$HUBSPOT_PERSONAL_ACCESS_KEY"
   fi
 
-  # Run command and capture output
-  COMMAND_OUTPUT=$(eval "$command" 2>&1)
+  # Run command and capture both stdout and stderr
+  COMMAND_OUTPUT=$(eval "$command 2>&1" )
   local exit_code=$?
 
   if [ $exit_code -ne 0 ]; then
