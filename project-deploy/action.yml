@@ -28,11 +28,6 @@ inputs:
     description: "Profile to use for the HubSpot CLI. If not provided, will use DEFAULT_PROFILE from environment."
     required: false
     type: string
-  debug:
-    description: "Enable debug mode for HubSpot CLI commands. Passes --debug flag to all hs commands."
-    required: false
-    default: false
-    type: boolean
 outputs:
   deploy_id:
     description: The deploy ID of the initiated HubSpot project deploy
@@ -41,7 +36,7 @@ runs:
   using: "composite"
   steps:
     - name: Install HubSpot CLI
-      uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1.0.1
+      uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1.0.0
       with:
         cli_version: ${{ inputs.cli_version }}
     - name: Deploy a HubSpot project build
@@ -87,7 +82,7 @@ runs:
         # Run deploy command
         run_hs_command \
           "hs project deploy --use-env --json $BUILD_ARG $PROFILE_ARG" \
-          "true --debug ${{inputs.debug}}"
+          "true"
 
         # Parse and set outputs
         set_output_from_json "deploy_id" ".deployId"
