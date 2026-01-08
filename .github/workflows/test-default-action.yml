@@ -5,7 +5,6 @@ env:
   DEFAULT_ACCOUNT_ID: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
   DEFAULT_PROFILE: "prod"
   DEFAULT_CLI_VERSION: "7.9.0"
-  DEFUALT_DEBUG: true
 
 jobs:
   deploy:
