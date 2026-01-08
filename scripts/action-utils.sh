@@ -74,7 +74,6 @@ run_hs_command() {
     exit $exit_code
   fi
 
-
   # Parse JSON if enabled
   if [ "$expect_json" = "true" ]; then
     if echo "$COMMAND_OUTPUT" | jq . >/dev/null 2>&1; then
