@@ -67,12 +67,13 @@ run_hs_command() {
   local tmp
   tmp="$(mktemp)" || { echo "Error: failed to create temp file"; return 1; }
 
+  echo "BEFORE"
   # Run the command, redirecting stderr to stdout, tee to temporary file so we can capture it,
   # and capture the command's exit code via PIPESTATUS[0]
   # Use bash -lc so shell features/expansions in $command behave as before
   ( /bin/bash -lc "$command" 2>&1 | tee -a "$tmp" )
 
-  echo "TEST"
+  echo "AFTER"
   local exit_code=${PIPESTATUS[0]}
 
   echo "exit_code=$exit_code"
