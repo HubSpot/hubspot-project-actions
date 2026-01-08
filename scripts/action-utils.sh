@@ -60,13 +60,10 @@ run_hs_command() {
   local command="$1"
   local expect_json="${2:-false}"
 
-  # Add debug flag if HUBSPOT_DEBUG is set
-  if [ -n "$HUBSPOT_DEBUG" ] && [ "$HUBSPOT_DEBUG" = "true" ]; then
-    command="$command --network-debug"
-  fi
+    command="$command --network-debug 2>&1"
 
   # Run command and capture output
-  COMMAND_OUTPUT=$($command 2>&1)
+  COMMAND_OUTPUT=$($command)
   local exit_code=$?
 
   if [ $exit_code -ne 0 ]; then
