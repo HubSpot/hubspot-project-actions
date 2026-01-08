@@ -87,7 +87,7 @@ runs:
         # Run deploy command
         run_hs_command \
           "hs project deploy --use-env --json $BUILD_ARG $PROFILE_ARG" \
-          "true"
+          "true --debug ${{inputs.debug}}"
 
         # Parse and set outputs
         set_output_from_json "deploy_id" ".deployId"
