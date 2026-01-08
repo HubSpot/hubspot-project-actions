@@ -58,6 +58,6 @@ runs:
         fi
 
         # Run validation - command will exit with non-zero if validation fails
-        run_hs_command "hs project validate --use-env $PROFILE_ARG --debug"
+        run_hs_command "hs project validate --use-env $PROFILE_ARG --network-debug"
 
         echo "✅ Project validation completed successfully"
