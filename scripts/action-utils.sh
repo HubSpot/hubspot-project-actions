@@ -64,11 +64,16 @@ run_hs_command() {
   COMMAND_OUTPUT=$(eval "$command")
   local exit_code=$?
 
+  if [ "$DEBUG_MODE" = "true" ]; then
+    echo "$COMMAND_OUTPUT"
+  fi
+
   if [ $exit_code -ne 0 ]; then
     echo "Error: Command failed with output:"
     echo "$COMMAND_OUTPUT"
     exit $exit_code
   fi
+
 
   # Parse JSON if enabled
   if [ "$expect_json" = "true" ]; then
