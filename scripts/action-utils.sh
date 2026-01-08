@@ -71,6 +71,8 @@ run_hs_command() {
   # and capture the command's exit code via PIPESTATUS[0]
   # Use bash -lc so shell features/expansions in $command behave as before
   ( /bin/bash -lc "$command" 2>&1 | tee -a "$tmp" )
+
+  echo "TEST"
   local exit_code=${PIPESTATUS[0]}
 
   echo "exit_code=$exit_code"
