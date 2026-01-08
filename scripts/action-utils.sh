@@ -60,7 +60,7 @@ run_hs_command() {
   local command="$1"
   local expect_json="${2:-false}"
 
-    command="$command --network-debug 2>&1"
+    command="$command --network-debug"
 
   # Run command and capture output
   COMMAND_OUTPUT=$($command)
