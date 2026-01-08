@@ -73,12 +73,12 @@ run_hs_command() {
   ( /bin/bash -lc "$command" 2>&1 | tee -a "$tmp" )
   local exit_code=${PIPESTATUS[0]}
 
+  echo "exit_code=$exit_code"
+
   # Read the captured output
   COMMAND_OUTPUT="$(cat "$tmp")"
   rm -f "$tmp"
 
-  # Print the output (we already streamed via tee, but keep echo for callers relying on output)
-  echo "$COMMAND_OUTPUT"
 
   if [ $exit_code -ne 0 ]; then
     echo "Error: Command failed with exit code $exit_code and output:"
