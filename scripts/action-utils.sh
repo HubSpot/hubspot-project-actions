@@ -57,19 +57,33 @@ resolve_project_dir() {
 #   Sets PARSED_OUTPUT variable with the parsed JSON (if JSON parsing is enabled and successful)
 #   Returns the command's exit code
 run_hs_command() {
-  local command="$1"
+  local command="$1 --debug"
   local expect_json="${2:-false}"
 
-    command="$command --network-debug"
+  # Ensure pipefail so we can read the real exit code when piping
+  set -o pipefail
 
-  # Run command and capture output
-  COMMAND_OUTPUT=$($command)
-  local exit_code=$?
+  # Use a temp file so we can both stream to console and capture full output
+  local tmp
+  tmp="$(mktemp)" || { echo "Error: failed to create temp file"; return 1; }
+
+  # Run the command, redirecting stderr to stdout, tee to temporary file so we can capture it,
+  # and capture the command's exit code via PIPESTATUS[0]
+  # Use bash -lc so shell features/expansions in $command behave as before
+  ( /bin/bash -lc "$command" 2>&1 | tee -a "$tmp" )
+  local exit_code=${PIPESTATUS[0]}
+
+  # Read the captured output
+  COMMAND_OUTPUT="$(cat "$tmp")"
+  rm -f "$tmp"
+
+  # Print the output (we already streamed via tee, but keep echo for callers relying on output)
+  echo "$COMMAND_OUTPUT"
 
   if [ $exit_code -ne 0 ]; then
-    echo "Error: Command failed with output:"
+    echo "Error: Command failed with exit code $exit_code and output:"
     echo "$COMMAND_OUTPUT"
-    exit $exit_code
+    return $exit_code
   fi
 
   # Parse JSON if enabled
@@ -79,7 +93,7 @@ run_hs_command() {
       return 0
     else
       echo "Error: Failed to parse JSON output: $COMMAND_OUTPUT"
-      exit 1
+      return 1
     fi
   fi
 
