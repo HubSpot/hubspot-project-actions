@@ -23,9 +23,8 @@ inputs:
     required: false
     type: string
   debug:
-    description: "Enable debug mode for HubSpot CLI commands. Passes --debug flag to all hs commands."
+    description: "Enable debug mode for HubSpot CLI commands. Passes --debug flag to all hs commands. If not provided, will use DEFAULT_DEBUG from environment."
     required: false
-    default: false
     type: boolean
 runs:
   using: "composite"
