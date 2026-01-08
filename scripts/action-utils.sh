@@ -65,7 +65,7 @@ run_hs_command() {
   fi
 
   # Run command and capture both stdout and stderr
-  COMMAND_OUTPUT=$(eval "$command 2>&1" )
+  COMMAND_OUTPUT=$($command 2>&1)
   local exit_code=$?
 
   if [ $exit_code -ne 0 ]; then
