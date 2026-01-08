@@ -26,6 +26,11 @@ inputs:
     description: "Profile to use for the HubSpot CLI. If not provided, will use DEFAULT_PROFILE from environment."
     required: false
     type: string
+  debug:
+    description: "Enable debug mode for HubSpot CLI commands. Passes --debug flag to all hs commands."
+    required: false
+    default: false
+    type: boolean
 outputs:
   build_id:
     description: "The build ID of the created HubSpot project build"
@@ -48,6 +53,7 @@ runs:
         account_id: ${{ inputs.account_id }}
         cli_version: ${{ inputs.cli_version }}
         profile: ${{ inputs.profile }}
+        debug: ${{ inputs.debug }}
     - name: Upload HubSpot Project
       id: upload-project-step
       uses: HubSpot/hubspot-project-actions/project-upload@v1.0.1
@@ -57,4 +63,5 @@ runs:
         account_id: ${{ inputs.account_id }}
         cli_version: ${{ inputs.cli_version }}
         profile: ${{ inputs.profile }}
+        debug: ${{ inputs.debug }}
 
