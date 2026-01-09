@@ -56,13 +56,7 @@ runs:
           PROFILE_ARG="--profile $HUBSPOT_PROFILE"
         fi
 
-        # Handle debug mode
-        DEBUG_ARG=""
-        if [ "$DEBUG_MODE" = "true" ]; then
-          DEBUG_ARG="--debug"
-        fi
-
         # Run validation - command will exit with non-zero if validation fails
-        run_hs_command "hs project validate --use-env $PROFILE_ARG $DEBUG_ARG"
+        run_hs_command "hs project validate --use-env $PROFILE_ARG"
 
         echo "✅ Project validation completed successfully"

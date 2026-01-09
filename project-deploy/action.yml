@@ -83,15 +83,9 @@ runs:
           BUILD_ARG="--build ${{ inputs.build_id }}"
         fi
 
-        # Handle debug mode
-        DEBUG_ARG=""
-        if [ "$DEBUG_MODE" = "true" ]; then
-          DEBUG_ARG="--debug"
-        fi
-
         # Run deploy command
         run_hs_command \
-          "hs project deploy --use-env --json $BUILD_ARG $PROFILE_ARG $DEBUG_ARG" \
+          "hs project deploy --use-env --json $BUILD_ARG $PROFILE_ARG" \
           "true"
 
         # Parse and set outputs
