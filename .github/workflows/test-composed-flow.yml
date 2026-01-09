@@ -5,7 +5,6 @@ env:
   DEFAULT_ACCOUNT_ID: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
   DEFAULT_PROFILE: "prod"
   DEFAULT_CLI_VERSION: "7.9.0"
-  DEFAULT_DEBUG: "true"
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -16,6 +15,7 @@ jobs:
         uses: ./project-validate
         with:
           project_dir: ./.github/workflows/test-project
+          debug: true
       - name: HubSpot Project Upload Action
         id: upload-project-step
         uses: ./project-upload
