@@ -9,6 +9,7 @@ Validates the configuration of a HubSpot project.
 - `account_id` (optional): HubSpot account ID associated with the personal access key. If not provided, will use DEFAULT_ACCOUNT_ID from environment.
 - `cli_version` (optional): Version of the HubSpot CLI to install. If not provided, will look for `DEFAULT_CLI_VERSION` in environment. If neither are found, defaults to a pre-determined stable version of the CLI.
 - `profile` (optional): Profile to use for the HubSpot CLI. If not provided, will use DEFAULT_PROFILE from environment.
+- `debug` (optional): Enable debug mode for verbose CLI output. Useful for troubleshooting validation failures. If not provided, will use DEFAULT_DEBUG from environment. Defaults to `false`.
 
 **Outputs:**
 

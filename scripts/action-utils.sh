@@ -59,10 +59,16 @@ resolve_project_dir() {
 run_hs_command() {
   local command="$1"
   local expect_json="${2:-false}"
+  local debug_flag=""
+
+  [ "$DEBUG_MODE" = "true" ] && debug_flag="--debug"
 
   # Run command and capture output
-  COMMAND_OUTPUT=$(eval "$command")
+  COMMAND_OUTPUT=$(eval "$command $debug_flag")
   local exit_code=$?
+
+  # Show output if debug mode is enabled
+  [ -n "$debug_flag" ] && echo "$COMMAND_OUTPUT"
 
   if [ $exit_code -ne 0 ]; then
     echo "Error: Command failed with output:"

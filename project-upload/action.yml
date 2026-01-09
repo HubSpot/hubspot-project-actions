@@ -22,6 +22,10 @@ inputs:
     description: "Profile to use for the HubSpot CLI. If not provided, will use DEFAULT_PROFILE from environment."
     required: false
     type: string
+  debug:
+    description: "Enable debug mode for HubSpot CLI commands. Passes --debug flag to all hs commands. If not provided, will use DEFAULT_DEBUG from environment."
+    required: false
+    type: boolean
 outputs:
   build_id:
     description: "The build ID of the created HubSpot project build"
@@ -40,6 +44,7 @@ runs:
         HUBSPOT_PERSONAL_ACCESS_KEY: ${{ inputs.personal_access_key || env.DEFAULT_PERSONAL_ACCESS_KEY }}
         HUBSPOT_ACCOUNT_ID: ${{ inputs.account_id || env.DEFAULT_ACCOUNT_ID }}
         HUBSPOT_PROFILE: ${{ inputs.profile || env.DEFAULT_PROFILE }}
+        DEBUG_MODE: ${{ inputs.debug || env.DEFAULT_DEBUG}}
       run: |
         # Source shared utilities
         . "$GITHUB_ACTION_PATH/../scripts/action-utils.sh"

@@ -74,7 +74,9 @@ For example:
 
 ## Available Actions
 
-All actions support the `DEFAULT_ACCOUNT_ID` and `DEFAULT_PERSONAL_ACCESS_KEY`, and `DEFAULT_CLI_VERSION` env variables. There's no need to pass them into each action individually as inputs.
+All actions support the `DEFAULT_ACCOUNT_ID`, `DEFAULT_PERSONAL_ACCESS_KEY`, `DEFAULT_CLI_VERSION`, and `DEFAULT_DEBUG` env variables. There's no need to pass them into each action individually as inputs.
+
+**TIP:** Set `DEFAULT_DEBUG: true` or pass `debug: true` to any action to enable verbose CLI output. This is useful for troubleshooting failures.
 
 ### `Project Upload`
 
