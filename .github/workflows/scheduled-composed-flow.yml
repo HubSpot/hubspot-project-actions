@@ -1,0 +1,42 @@
+on:
+  schedule:
+    - cron: '0 14 * * 1-5' # Run every weekday at 2:00 PM UTC
+  workflow_dispatch: # Allow manual triggers
+
+env:
+  DEFAULT_PERSONAL_ACCESS_KEY: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
+  DEFAULT_ACCOUNT_ID: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
+  DEFAULT_PROFILE: "prod"
+  DEFAULT_CLI_VERSION: "latest"
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: HubSpot Project Validation Action
+        uses: ./project-validate
+        with:
+          project_dir: ./.github/workflows/test-project
+      - name: HubSpot Project Upload Action
+        id: upload-project-step
+        uses: ./project-upload
+        with:
+          project_dir: ./.github/workflows/test-project
+      - name: HubSpot Project Deploy Action
+        if: ${{ steps.upload-project-step.outputs.build_id != '' }}
+        uses: ./project-deploy
+        with:
+          project_dir: ./.github/workflows/test-project
+          deploy_latest_build: true
+      - name: Slack Failure Notification
+        uses: ravsamhq/notify-slack-action@v2
+        if: failure()
+        with:
+          status: ${{ job.status }}
+          notify_when: 'failure'
+          notification_title: 'HubSpot Composed Flow Scheduled Run Failed'
+          message_format: 'The scheduled HubSpot Composed Flow deployment has failed.'
+          footer: '<{run_url}|View Run>'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
