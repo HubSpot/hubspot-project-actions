@@ -36,8 +36,8 @@ jobs:
         with:
           status: ${{ job.status }}
           notify_when: 'failure'
-          notification_title: 'HubSpot Composed Flow Scheduled Run Failed'
-          message_format: 'The scheduled HubSpot Composed Flow deployment has failed.'
+          notification_title: 'HubSpot Project Actions'
+          message_format: 'The composed flow test has failed with the latest version of the CLI'
           footer: '<{run_url}|View Run>'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}

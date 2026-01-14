@@ -2,6 +2,7 @@ on:
   schedule:
     - cron: '0 14 * * 1-5' # Run every weekday at 2:00 PM UTC
   workflow_dispatch: # Allow manual triggers
+  pull_request:
 
 env:
   DEFAULT_PERSONAL_ACCESS_KEY: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
@@ -25,8 +26,8 @@ jobs:
         with:
           status: ${{ job.status }}
           notify_when: 'failure'
-          notification_title: 'HubSpot Default Action Scheduled Run Failed'
-          message_format: 'The scheduled HubSpot Default Action deployment has failed.'
+          notification_title: 'HubSpot Project Actions'
+          message_format: 'The default action test has failed with the latest version of the CLI'
           footer: '<{run_url}|View Run>'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
