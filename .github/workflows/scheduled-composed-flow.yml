@@ -2,7 +2,6 @@ on:
   schedule:
     - cron: '0 14 * * 1-5' # Run every weekday at 2:00 PM UTC
   workflow_dispatch: # Allow manual triggers
-  pull_request:
 
 env:
   DEFAULT_PERSONAL_ACCESS_KEY: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
