@@ -51,6 +51,51 @@ jobs:
 
 This should enable automatic uploads to your target HubSpot account with every commit into `main` 🎉
 
+## Using with HubSpot Project Profiles
+
+If your HubSpot project uses [config profiles](https://developers.hubspot.com/docs/developer-tooling/local-development/build-with-config-profiles) to manage multiple environments, you'll need to configure your actions to specify which profile to target. Profiles allow you to deploy the same project to different HubSpot accounts (e.g., development, staging, production) with environment-specific configurations.
+
+Each profile targets a different HubSpot account, so you'll need to configure separate credentials for each environment:
+
+#### 1. Set up GitHub Secrets for Each Profile
+
+For each profile you want to use in your CI/CD workflows, create a corresponding set of secrets:
+
+- For a `qa` profile targeting account `12345`:
+  - `HUBSPOT_QA_ACCOUNT_ID` = `12345`
+  - `HUBSPOT_QA_PERSONAL_ACCESS_KEY` = `[personal access key for account 12345]`
+
+- For a `prod` profile targeting account `67890`:
+  - `HUBSPOT_PROD_ACCOUNT_ID` = `67890`
+  - `HUBSPOT_PROD_PERSONAL_ACCESS_KEY` = `[personal access key for account 67890]`
+
+**Note:** The personal access key must be generated for the specific HubSpot account that the profile targets.
+
+#### 2. Configure Your Workflow
+
+Use the profile-specific secrets and pass the `profile` parameter to the action:
+
+```yaml
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Upload to QA
+        uses: HubSpot/hubspot-project-actions/project-upload@v1.0.1
+        with:
+          profile: "qa"
+          account_id: ${{ secrets.HUBSPOT_QA_ACCOUNT_ID }}
+          personal_access_key: ${{ secrets.HUBSPOT_QA_PERSONAL_ACCESS_KEY }}
+```
+**Important:** All actions (`project-upload`, `project-deploy`, `project-validate`) support the `profile` parameter. When using profiles, you must pass the profile-specific credentials to each action.
+
 ## Versioning
 
 This repository uses semantic versioning with Git tags.

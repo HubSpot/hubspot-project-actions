@@ -47,3 +47,39 @@ jobs:
           build_id: ${{ steps.upload-step.outputs.build_id }}
           project_dir: "./my-project" # optional
 ```
+
+**Example with profiles:**
+
+If your project uses [config profiles](https://developers.hubspot.com/docs/developer-tooling/local-development/build-with-config-profiles), specify the profile and corresponding credentials for both upload and deploy:
+
+```yaml
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-to-production:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Upload to Production
+        id: upload-step
+        uses: HubSpot/hubspot-project-actions/project-upload@v1.0.1
+        with:
+          profile: "prod"
+          account_id: ${{ secrets.HUBSPOT_PROD_ACCOUNT_ID }}
+          personal_access_key: ${{ secrets.HUBSPOT_PROD_PERSONAL_ACCESS_KEY }}
+          project_dir: "./my-project"
+      - name: Deploy to Production
+        uses: HubSpot/hubspot-project-actions/project-deploy@v1.0.1
+        with:
+          profile: "prod"
+          account_id: ${{ secrets.HUBSPOT_PROD_ACCOUNT_ID }}
+          personal_access_key: ${{ secrets.HUBSPOT_PROD_PERSONAL_ACCESS_KEY }}
+          build_id: ${{ steps.upload-step.outputs.build_id }}
+          project_dir: "./my-project"
+```
+
+**Note:** When using profiles, ensure you've created GitHub secrets for each profile's account credentials (e.g., `HUBSPOT_PROD_ACCOUNT_ID` and `HUBSPOT_PROD_PERSONAL_ACCESS_KEY`). Both upload and deploy actions must use the same profile and credentials. See the [main documentation](../README.md#using-with-hubspot-project-profiles) for more details.

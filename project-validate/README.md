@@ -27,7 +27,7 @@ env:
   DEFAULT_PERSONAL_ACCESS_KEY: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
 
 jobs:
-  deploy:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -37,3 +37,27 @@ jobs:
         with:
           project_dir: "./my-project" # optional
 ```
+
+**Example with profiles:**
+
+If your project uses [config profiles](https://developers.hubspot.com/docs/developer-tooling/local-development/build-with-config-profiles), you can validate against a specific profile:
+
+```yaml
+on: [push]
+
+jobs:
+  validate-staging:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Validate Staging Configuration
+        uses: HubSpot/hubspot-project-actions/project-validate@v1.0.1
+        with:
+          profile: "staging"
+          account_id: ${{ secrets.HUBSPOT_STAGING_ACCOUNT_ID }}
+          personal_access_key: ${{ secrets.HUBSPOT_STAGING_PERSONAL_ACCESS_KEY }}
+          project_dir: "./my-project"
+```
+
+**Note:** When using profiles, ensure you've created GitHub secrets for each profile's account credentials (e.g., `HUBSPOT_STAGING_ACCOUNT_ID` and `HUBSPOT_STAGING_PERSONAL_ACCESS_KEY`). See the [main documentation](../README.md#using-with-hubspot-project-profiles) for more details.
