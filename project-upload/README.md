@@ -41,3 +41,30 @@ jobs:
         with:
           project_dir: "./my-project" # optional
 ```
+
+**Example with profiles:**
+
+If your project uses [config profiles](https://developers.hubspot.com/docs/developer-tooling/local-development/build-with-config-profiles), specify the profile and corresponding credentials:
+
+```yaml
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  upload-to-qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Upload to QA Environment
+        uses: HubSpot/hubspot-project-actions/project-upload@v1.0.1
+        with:
+          profile: "qa"
+          account_id: ${{ secrets.HUBSPOT_QA_ACCOUNT_ID }}
+          personal_access_key: ${{ secrets.HUBSPOT_QA_PERSONAL_ACCESS_KEY }}
+          project_dir: "./my-project"
+```
+
+**Note:** When using profiles, ensure you've created GitHub secrets for each profile's account credentials (e.g., `HUBSPOT_QA_ACCOUNT_ID` and `HUBSPOT_QA_PERSONAL_ACCESS_KEY`). See the [main documentation](../README.md#using-with-hubspot-project-profiles) for more details.
