@@ -1,0 +1,32 @@
+on:
+  schedule:
+    - cron: '0 14 * * 1,3,5' # Run every Monday, Wednesday, and Friday at 2:00 PM UTC
+  workflow_dispatch: # Allow manual triggers
+
+env:
+  DEFAULT_PERSONAL_ACCESS_KEY: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
+  DEFAULT_ACCOUNT_ID: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
+  DEFAULT_PROFILE: "prod"
+  DEFAULT_CLI_VERSION: "latest"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: HubSpot Default Action
+        uses: ./
+        with:
+          project_dir: ./.github/workflows/test-project
+      - name: Slack Failure Notification
+        uses: ravsamhq/notify-slack-action@v2
+        if: failure()
+        with:
+          status: ${{ job.status }}
+          notify_when: 'failure'
+          notification_title: 'HubSpot Project Actions'
+          message_format: 'The default action test has failed with the latest version of the CLI'
+          footer: '<{run_url}|View Run>'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
