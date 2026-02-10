@@ -39,6 +39,8 @@ update the version in the following places:
 
 Once those all have been updated, open a PR to `main` and get it approved and merge it.
 
+**Note:** The branch CI workflows will fail because the new version tag does not exist yet. This is expected — you will need to merge past the failing checks.
+
 ## 2. Create a Release Tag
 After your PR to update the versions is merged get the latest main changes again.
 
