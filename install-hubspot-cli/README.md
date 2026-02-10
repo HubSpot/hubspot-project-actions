@@ -31,7 +31,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install HubSpot CLI Action
-        uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1.0.1
+        uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1.1.0
         with:
           cli_version: "8.0.0"
 ```
