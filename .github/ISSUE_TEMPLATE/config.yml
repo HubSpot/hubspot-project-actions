@@ -1,8 +1,0 @@
-blank_issues_enabled: false
-contact_links:
-  - name: HubSpot Developer Documentation
-    url: https://developers.hubspot.com/docs
-    about: Check the official HubSpot developer docs for setup guides and references.
-  - name: HubSpot Developer Slack
-    url: https://developers.hubspot.com/slack
-    about: Ask questions and get help from the HubSpot developer community.
