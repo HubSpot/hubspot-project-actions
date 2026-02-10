@@ -33,7 +33,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: HubSpot Project Validation
-        uses: HubSpot/hubspot-project-actions/project-validate@v1.0.1
+        uses: HubSpot/hubspot-project-actions/project-validate@v1.1.0
         with:
           project_dir: "./my-project" # optional
 ```
@@ -52,7 +52,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Validate Staging Configuration
-        uses: HubSpot/hubspot-project-actions/project-validate@v1.0.1
+        uses: HubSpot/hubspot-project-actions/project-validate@v1.1.0
         with:
           profile: "staging"
           account_id: ${{ secrets.HUBSPOT_STAGING_ACCOUNT_ID }}

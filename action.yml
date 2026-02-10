@@ -37,11 +37,11 @@ runs:
   using: "composite"
   steps:
     - name: Install HubSpot CLI
-      uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1.0.1
+      uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1.1.0
       with:
         cli_version: ${{ inputs.cli_version }}
     - name: Validate HubSpot Project
-      uses: HubSpot/hubspot-project-actions/project-validate@v1.0.1
+      uses: HubSpot/hubspot-project-actions/project-validate@v1.1.0
       with:
         project_dir: ${{ inputs.project_dir }}
         personal_access_key: ${{ inputs.personal_access_key }}
@@ -50,7 +50,7 @@ runs:
         profile: ${{ inputs.profile }}
     - name: Upload HubSpot Project
       id: upload-project-step
-      uses: HubSpot/hubspot-project-actions/project-upload@v1.0.1
+      uses: HubSpot/hubspot-project-actions/project-upload@v1.1.0
       with:
         project_dir: ${{ inputs.project_dir }}
         personal_access_key: ${{ inputs.personal_access_key }}

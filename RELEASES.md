@@ -26,14 +26,16 @@ Use semantic versioning to determine the appropriate version number:
 - **PATCH** version for backwards-compatible bug fixes
 
 ### 1.b Update version references
-Once you have determined what the new version will be, you will need to update any version references in the actions themselves. So create a branch and 
-update the version in the `uses` keys in both the .yml files and the examples in the README.md files.  
+Once you have determined what the new version will be, you will need to update any version references in the actions themselves. So create a branch and
+update the version in the following places:
 
-They will look like this:
+1. The `uses` keys in the `.yml` action files and the examples in the README.md files:
 
 ```yaml
     uses: HubSpot/hubspot-project-actions/project-upload@version
 ```
+
+2. The `version` field in `package.json`
 
 Once those all have been updated, open a PR to `main` and get it approved and merge it.
 

@@ -37,7 +37,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: HubSpot Project Upload
-        uses: HubSpot/hubspot-project-actions/project-upload@v1.0.1
+        uses: HubSpot/hubspot-project-actions/project-upload@v1.1.0
         with:
           project_dir: "./my-project" # optional
 ```
@@ -59,7 +59,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Upload to QA Environment
-        uses: HubSpot/hubspot-project-actions/project-upload@v1.0.1
+        uses: HubSpot/hubspot-project-actions/project-upload@v1.1.0
         with:
           profile: "qa"
           account_id: ${{ secrets.HUBSPOT_QA_ACCOUNT_ID }}
