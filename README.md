@@ -15,7 +15,7 @@ The recommended way to leverage these in your actions is to set them as environm
 env:
   DEFAULT_ACCOUNT_ID: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
   DEFAULT_PERSONAL_ACCESS_KEY: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
-  DEFAULT_CLI_VERSION: "7.9.0" # Optional: specify a CLI version (it will default to a stable version).
+  DEFAULT_CLI_VERSION: "8.0.0" # Optional: specify a CLI version (it will default to a stable version).
 ```
 
 **TIP:** The `DEFAULT_CLI_VERSION` will default to a specific stable version.  If the `DEFAULT_CLI_VERSION` is used, we recommend targeting a specific cli version instead of using dist-tags like "latest" or "next" to prevent new releases from impacting your CI/CD flow.
@@ -177,5 +177,5 @@ See the [install-hubspot-cli docs](./install-hubspot-cli/README.md) for detailed
 ```yaml
 - uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1.0.1
   with:
-    cli_version: "7.9.0"
+    cli_version: "8.0.0"
 ```
