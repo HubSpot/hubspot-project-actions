@@ -1,0 +1,87 @@
+name: Bug Report
+description: Report a problem with a HubSpot Project Action
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. Please fill out the information below so we can investigate.
+
+  - type: dropdown
+    id: action
+    attributes:
+      label: Action
+      description: Which action is affected?
+      options:
+        - "hubspot-project-actions (default composite)"
+        - "project-upload"
+        - "project-deploy"
+        - "project-validate"
+        - "install-hubspot-cli"
+    validations:
+      required: true
+
+  - type: input
+    id: action-version
+    attributes:
+      label: Action Version
+      description: "Which version of the action are you using? (e.g. v1.1.0)"
+      placeholder: "v1.1.0"
+    validations:
+      required: true
+
+  - type: input
+    id: cli-version
+    attributes:
+      label: HubSpot CLI Version
+      description: "Which CLI version is being installed? (e.g. 8.0.0, latest)"
+      placeholder: "8.0.0"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear description of the bug.
+      placeholder: "Describe what went wrong."
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Workflow Configuration
+      description: |
+        Paste the relevant portion of your workflow YAML.
+        **Remove any secrets or access keys before pasting.**
+      render: yaml
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Action Logs / Error Output
+      description: |
+        Paste the relevant log output from the failed workflow run.
+        **Remove any secrets or access keys before pasting.**
+      render: text
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context, screenshots, or links to the failed run.
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      options:
+        - label: I have read and agree to the [Code of Conduct](https://github.com/HubSpot/hubspot-project-actions/blob/main/.github/CODE_OF_CONDUCT.md)
+          required: true

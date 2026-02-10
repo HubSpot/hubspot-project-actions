@@ -1,0 +1,60 @@
+name: Feature Request
+description: Suggest an enhancement or new capability
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a feature! Please describe your idea so we can evaluate it.
+
+  - type: dropdown
+    id: action
+    attributes:
+      label: Related Action
+      description: Which action does this relate to? Select "General" if it applies broadly.
+      options:
+        - "General"
+        - "hubspot-project-actions (default composite)"
+        - "project-upload"
+        - "project-deploy"
+        - "project-validate"
+        - "install-hubspot-cli"
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or Motivation
+      description: What problem does this feature solve, or what workflow does it improve?
+      placeholder: "I'm always frustrated when..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How would you like this to work? Include example workflow YAML if helpful.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any workarounds or alternative approaches?
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context, screenshots, or references.
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      options:
+        - label: I have read and agree to the [Code of Conduct](https://github.com/HubSpot/hubspot-project-actions/blob/main/.github/CODE_OF_CONDUCT.md)
+          required: true
