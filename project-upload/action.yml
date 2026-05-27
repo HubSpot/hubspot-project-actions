@@ -45,6 +45,7 @@ runs:
         HUBSPOT_ACCOUNT_ID: ${{ inputs.account_id || env.DEFAULT_ACCOUNT_ID }}
         HUBSPOT_PROFILE: ${{ inputs.profile || env.DEFAULT_PROFILE }}
         DEBUG_MODE: ${{ inputs.debug || env.DEFAULT_DEBUG}}
+        HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message || 'Uploaded via HubSpot GitHub Action' }}
       run: |
         # Source shared utilities
         . "$GITHUB_ACTION_PATH/../scripts/action-utils.sh"
@@ -61,9 +62,13 @@ runs:
           PROFILE_ARG="--profile $HUBSPOT_PROFILE"
         fi
 
+        # Build the upload message from the env var (not via ${{ }} template interpolation) so that
+        # shell metacharacters like backticks in the commit message are never executed by bash.
+        UPLOAD_MESSAGE="$(printf '%s' "$HEAD_COMMIT_MESSAGE" | head -n 1) (${GITHUB_SHA:0:7})"
+
         # Run upload command
         run_hs_command \
-          "hs project upload --force-create --use-env --json --message '${{ github.event.head_commit.message || 'Uploaded via HubSpot GitHub Action' }} (${GITHUB_SHA:0:7})' $PROFILE_ARG" \
+          "hs project upload --force-create --use-env --json --message \"\$UPLOAD_MESSAGE\" $PROFILE_ARG" \
           "true"
 
         # Parse and set outputs
