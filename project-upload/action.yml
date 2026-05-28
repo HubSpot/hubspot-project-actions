@@ -45,7 +45,6 @@ runs:
         HUBSPOT_ACCOUNT_ID: ${{ inputs.account_id || env.DEFAULT_ACCOUNT_ID }}
         HUBSPOT_PROFILE: ${{ inputs.profile || env.DEFAULT_PROFILE }}
         DEBUG_MODE: ${{ inputs.debug || env.DEFAULT_DEBUG}}
-        HEAD_COMMIT_MESSAGE: ${{ github.event.head_commit.message || 'Uploaded via HubSpot GitHub Action' }}
       run: |
         # Source shared utilities
         . "$GITHUB_ACTION_PATH/../scripts/action-utils.sh"
@@ -62,13 +61,19 @@ runs:
           PROFILE_ARG="--profile $HUBSPOT_PROFILE"
         fi
 
-        # Build the upload message from the env var (not via ${{ }} template interpolation) so that
-        # shell metacharacters like backticks in the commit message are never executed by bash.
-        UPLOAD_MESSAGE="$(printf '%s' "$HEAD_COMMIT_MESSAGE" | head -n 1) (${GITHUB_SHA:0:7})"
+        # Read the commit message from the event payload at runtime to avoid template
+        # interpolation, so shell metacharacters in the message are never executed.
+        # GITHUB_EVENT_PATH is always set by the runner and points to the full event JSON.
+        HEAD_COMMIT_MESSAGE=$(jq -r '.head_commit.message // ""' "$GITHUB_EVENT_PATH" 2>/dev/null || true)
+        UPLOAD_MESSAGE="$(printf '%s' "${HEAD_COMMIT_MESSAGE:-Uploaded via HubSpot GitHub Action}" | head -n 1) (${GITHUB_SHA:0:7})"
+
+        # printf '%q' shell-escapes UPLOAD_MESSAGE so that eval in run_hs_command
+        # treats quotes and other special characters in the value as literals.
+        SAFE_MSG=$(printf '%q' "$UPLOAD_MESSAGE")
 
         # Run upload command
         run_hs_command \
-          "hs project upload --force-create --use-env --json --message \"\$UPLOAD_MESSAGE\" $PROFILE_ARG" \
+          "hs project upload --force-create --use-env --json --message $SAFE_MSG $PROFILE_ARG" \
           "true"
 
         # Parse and set outputs

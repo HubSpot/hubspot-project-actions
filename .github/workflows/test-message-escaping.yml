@@ -32,8 +32,9 @@ jobs:
             HEAD_COMMIT_MESSAGE="$input"
             UPLOAD_MESSAGE="$(printf '%s' "$HEAD_COMMIT_MESSAGE" | head -n 1) (abc1234)"
 
+            SAFE_MSG=$(printf '%q' "$UPLOAD_MESSAGE")
             run_hs_command \
-              "hs project upload --force-create --use-env --json --message \"\$UPLOAD_MESSAGE\"" \
+              "hs project upload --force-create --use-env --json --message $SAFE_MSG" \
               "true"
 
             local captured
@@ -58,6 +59,11 @@ jobs:
             "dollar-paren command substitution is not executed" \
             'Test $(echo pwned) in message' \
             '$(echo pwned)'
+
+          test_message \
+            "single quotes are preserved" \
+            "Test with 'single quotes' inside" \
+            "'single quotes'"
 
           test_message \
             "double quotes are preserved" \
