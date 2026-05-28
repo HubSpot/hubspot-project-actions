@@ -66,11 +66,13 @@ runs:
         # shell metacharacters like backticks in the commit message are never executed by bash.
         UPLOAD_MESSAGE="$(printf '%s' "$HEAD_COMMIT_MESSAGE" | head -n 1) (${GITHUB_SHA:0:7})"
 
-        # Run upload command
         # printf '%q' shell-escapes UPLOAD_MESSAGE so that eval in run_hs_command
         # treats quotes and other special characters in the value as literals.
+        SAFE_MSG=$(printf '%q' "$UPLOAD_MESSAGE")
+
+        # Run upload command
         run_hs_command \
-          "hs project upload --force-create --use-env --json --message $(printf '%q' "$UPLOAD_MESSAGE") $PROFILE_ARG" \
+          "hs project upload --force-create --use-env --json --message $SAFE_MSG $PROFILE_ARG" \
           "true"
 
         # Parse and set outputs
