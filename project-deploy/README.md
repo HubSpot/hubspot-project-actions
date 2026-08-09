@@ -35,14 +35,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: HubSpot Project Upload
         id: upload-step
-        uses: HubSpot/hubspot-project-actions/project-upload@v1.1.0
+        uses: HubSpot/hubspot-project-actions/project-upload@v1.1.2
         with:
           project_dir: "./my-project" # optional
       - name: HubSpot Project Deploy
-        uses: HubSpot/hubspot-project-actions/project-deploy@v1.1.0
+        uses: HubSpot/hubspot-project-actions/project-deploy@v1.1.2
         with:
           build_id: ${{ steps.upload-step.outputs.build_id }}
           project_dir: "./my-project" # optional
@@ -63,17 +63,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Upload to Production
         id: upload-step
-        uses: HubSpot/hubspot-project-actions/project-upload@v1.1.0
+        uses: HubSpot/hubspot-project-actions/project-upload@v1.1.2
         with:
           profile: "prod"
           account_id: ${{ secrets.HUBSPOT_PROD_ACCOUNT_ID }}
           personal_access_key: ${{ secrets.HUBSPOT_PROD_PERSONAL_ACCESS_KEY }}
           project_dir: "./my-project"
       - name: Deploy to Production
-        uses: HubSpot/hubspot-project-actions/project-deploy@v1.1.0
+        uses: HubSpot/hubspot-project-actions/project-deploy@v1.1.2
         with:
           profile: "prod"
           account_id: ${{ secrets.HUBSPOT_PROD_ACCOUNT_ID }}

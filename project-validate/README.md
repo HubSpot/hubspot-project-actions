@@ -31,9 +31,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: HubSpot Project Validation
-        uses: HubSpot/hubspot-project-actions/project-validate@v1.1.0
+        uses: HubSpot/hubspot-project-actions/project-validate@v1.1.2
         with:
           project_dir: "./my-project" # optional
 ```
@@ -50,9 +50,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Validate Staging Configuration
-        uses: HubSpot/hubspot-project-actions/project-validate@v1.1.0
+        uses: HubSpot/hubspot-project-actions/project-validate@v1.1.2
         with:
           profile: "staging"
           account_id: ${{ secrets.HUBSPOT_STAGING_ACCOUNT_ID }}

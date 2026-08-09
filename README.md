@@ -40,9 +40,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: HubSpot Project Action
-        uses: HubSpot/hubspot-project-actions@v1.1.0
+        uses: HubSpot/hubspot-project-actions@v1.1.2
 ```
 
 3. Commit and merge your changes
@@ -86,9 +86,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Upload to QA
-        uses: HubSpot/hubspot-project-actions/project-upload@v1.1.0
+        uses: HubSpot/hubspot-project-actions/project-upload@v1.1.2
         with:
           profile: "qa"
           account_id: ${{ secrets.HUBSPOT_QA_ACCOUNT_ID }}
@@ -132,7 +132,7 @@ See the [project-upload docs](./project-upload/README.md) for detailed specs.
 **Example usage:**
 
 ```yaml
-- uses: HubSpot/hubspot-project-actions/project-upload@v1.1.0
+- uses: HubSpot/hubspot-project-actions/project-upload@v1.1.2
   with:
     project_dir: "./my-project" # optional
 ```
@@ -146,7 +146,7 @@ See the [project-deploy docs](./project-deploy/README.md) for detailed specs.
 **Example usage:**
 
 ```yaml
-- uses: HubSpot/hubspot-project-actions/project-deploy@v1.1.0
+- uses: HubSpot/hubspot-project-actions/project-deploy@v1.1.2
   with:
     build_id: ${{ steps.upload-action-step.outputs.build_id }}
     project_dir: "./my-project" # optional
@@ -161,7 +161,7 @@ See the [project-validate docs](./project-validate/README.md) for detailed specs
 **Example usage:**
 
 ```yaml
-- uses: HubSpot/hubspot-project-actions/project-validate@v1.1.0
+- uses: HubSpot/hubspot-project-actions/project-validate@v1.1.2
   with:
     project_dir: "./my-project" # optional
 ```
@@ -175,7 +175,7 @@ See the [install-hubspot-cli docs](./install-hubspot-cli/README.md) for detailed
 **Example usage:**
 
 ```yaml
-- uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1.1.0
+- uses: HubSpot/hubspot-project-actions/install-hubspot-cli@v1.1.2
   with:
     cli_version: "8.0.0"
 ```
