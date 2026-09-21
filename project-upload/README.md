@@ -35,9 +35,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: HubSpot Project Upload
-        uses: HubSpot/hubspot-project-actions/project-upload@v1.1.0
+        uses: HubSpot/hubspot-project-actions/project-upload@v1.1.2
         with:
           project_dir: "./my-project" # optional
 ```
@@ -57,9 +57,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Upload to QA Environment
-        uses: HubSpot/hubspot-project-actions/project-upload@v1.1.0
+        uses: HubSpot/hubspot-project-actions/project-upload@v1.1.2
         with:
           profile: "qa"
           account_id: ${{ secrets.HUBSPOT_QA_ACCOUNT_ID }}

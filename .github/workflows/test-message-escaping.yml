@@ -6,7 +6,7 @@ jobs:
   test-message-escaping:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Test that shell metacharacters in commit messages are preserved
         shell: bash
         run: |
