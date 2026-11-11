@@ -10,6 +10,7 @@ Uploads and builds a HubSpot project in your account. If auto-deploy is enabled,
 - `cli_version` (optional): Version of the HubSpot CLI to install. If not provided, will look for `DEFAULT_CLI_VERSION` in environment. If neither are found, defaults to `latest`.
 - `profile` (optional): Profile to use for the HubSpot CLI. If not provided, will use DEFAULT_PROFILE from environment.
 - `debug` (optional): Enable debug mode for verbose CLI output. Useful for troubleshooting upload failures. If not provided, will use DEFAULT_DEBUG from environment. Defaults to `false`.
+- `skip_auto_deploy` (optional): Skip the automatic deployment after a successful build, so the build can be deployed separately with the `project-deploy` action. Defaults to `false`.
 
 **Outputs:**
 

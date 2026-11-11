@@ -12,6 +12,7 @@ Deploys a specific build of a HubSpot project.
 - `cli_version` (optional): Version of the HubSpot CLI to install. If not provided, will look for `DEFAULT_CLI_VERSION` in environment. If neither are found, defaults to a pre-determined stable version of the CLI.
 - `profile` (optional): Profile to use for the HubSpot CLI. If not provided, will use DEFAULT_PROFILE from environment.
 - `debug` (optional): Enable debug mode for verbose CLI output. Useful for troubleshooting deploy failures. If not provided, will use DEFAULT_DEBUG from environment. Defaults to `false`.
+- `force` (optional): Skip warnings and force the deploy. Use carefully, it bypasses warnings for destructive actions such as removing components that exist in the account but not in the project. Defaults to `false`.
 
 **Outputs:**
 
