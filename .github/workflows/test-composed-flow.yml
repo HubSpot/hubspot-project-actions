@@ -27,3 +27,16 @@ jobs:
         with:
           project_dir: ./.github/workflows/test-project
           deploy_latest_build: true
+      - name: HubSpot Project Upload Action (skip auto-deploy)
+        id: upload-skip-auto-deploy-step
+        uses: ./project-upload
+        with:
+          project_dir: ./.github/workflows/test-project
+          skip_auto_deploy: true
+      - name: HubSpot Project Force Deploy Action
+        if: ${{ steps.upload-skip-auto-deploy-step.outputs.build_id != '' }}
+        uses: ./project-deploy
+        with:
+          project_dir: ./.github/workflows/test-project
+          deploy_latest_build: true
+          force: true

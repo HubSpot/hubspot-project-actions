@@ -26,6 +26,11 @@ inputs:
     description: "Enable debug mode for HubSpot CLI commands. Passes --debug flag to all hs commands. If not provided, will use DEFAULT_DEBUG from environment."
     required: false
     type: boolean
+  skip_auto_deploy:
+    description: "Skip the automatic deployment after a successful build, so the build can be deployed separately with the project-deploy action. Defaults to false."
+    required: false
+    default: false
+    type: boolean
 outputs:
   build_id:
     description: "The build ID of the created HubSpot project build"
@@ -61,6 +66,12 @@ runs:
           PROFILE_ARG="--profile $HUBSPOT_PROFILE"
         fi
 
+        # Handle skipping the automatic deployment
+        SKIP_AUTO_DEPLOY_ARG=""
+        if [ "${{ inputs.skip_auto_deploy }}" = "true" ]; then
+          SKIP_AUTO_DEPLOY_ARG="--skip-auto-deploy"
+        fi
+
         # Read the commit message from the event payload at runtime to avoid template
         # interpolation, so shell metacharacters in the message are never executed.
         # GITHUB_EVENT_PATH is always set by the runner and points to the full event JSON.
@@ -73,7 +84,7 @@ runs:
 
         # Run upload command
         run_hs_command \
-          "hs project upload --force-create --use-env --json --message $SAFE_MSG $PROFILE_ARG" \
+          "hs project upload --force-create --use-env --json --message $SAFE_MSG $PROFILE_ARG $SKIP_AUTO_DEPLOY_ARG" \
           "true"
 
         # Parse and set outputs

@@ -32,6 +32,11 @@ inputs:
     description: "Enable debug mode for HubSpot CLI commands. Passes --debug flag to all hs commands. If not provided, will use DEFAULT_DEBUG from environment."
     required: false
     type: boolean
+  force:
+    description: "Skip warnings and force the deploy. Use carefully, it bypasses warnings for destructive actions such as removing components. Defaults to false."
+    required: false
+    default: false
+    type: boolean
 outputs:
   deploy_id:
     description: The deploy ID of the initiated HubSpot project deploy
@@ -83,9 +88,15 @@ runs:
           BUILD_ARG="--build ${{ inputs.build_id }}"
         fi
 
+        # Handle force usage
+        FORCE_ARG=""
+        if [ "${{ inputs.force }}" = "true" ]; then
+          FORCE_ARG="--force"
+        fi
+
         # Run deploy command
         run_hs_command \
-          "hs project deploy --use-env --json $BUILD_ARG $PROFILE_ARG" \
+          "hs project deploy --use-env --json $BUILD_ARG $PROFILE_ARG $FORCE_ARG" \
           "true"
 
         # Parse and set outputs
